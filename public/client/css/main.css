@@ -1,0 +1,143 @@
+/* =========================
+   Navbar
+   ========================= */
+.navbar {
+    height: 56px;
+    background: #111827; /* màu tối hiện đại */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo,
+.navbar .navbar-brand {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-links a {
+    margin-left: 1rem;
+    color: #d1d5db;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.nav-links a:hover {
+    color: #fff;
+}
+
+/* =========================
+     Toggle Button (Hamburger)
+     ========================= */
+#toggleSidebar,
+.btn-icon {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block; /* luôn hiện trên mọi kích thước */
+    padding: 0.25rem 0.5rem;
+}
+
+/* =========================
+     Sidebar (overlay)
+     ========================= */
+#sidebar {
+    width: 260px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg, #1f2937, #111827);
+    color: #fff;
+    overflow-y: auto;
+    padding-top: 56px; /* đẩy nội dung xuống dưới navbar */
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1100;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+#sidebar.show {
+    transform: translateX(0);
+}
+
+#sidebar .list-group-item {
+    border: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+}
+
+#sidebar .list-group-item a {
+    color: #d1d5db;
+    text-decoration: none;
+    font-weight: 500;
+    flex: 1;
+}
+#sidebar .list-group-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+#sidebar .list-group-item a:hover {
+    color: #fff;
+}
+#sidebar .list-group-item i {
+    font-size: 1.2rem;
+    color: #9ca3af;
+    transition: color 0.2s;
+}
+#sidebar .list-group-item:hover i {
+    color: #fff;
+}
+
+/* =========================
+     Backdrop
+     ========================= */
+#sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1050;
+    display: none;
+}
+#sidebar-backdrop.active {
+    display: block;
+}
+
+/* =========================
+     Content
+     ========================= */
+#content {
+    padding: 80px 20px 20px;
+    transition: filter 0.2s ease;
+}
+
+/* Khi sidebar mở thì làm mờ content */
+body.sidebar-open #content {
+    filter: brightness(0.92);
+}
+
+/* =========================
+     Responsive
+     ========================= */
+@media (max-width: 480px) {
+    #sidebar {
+        width: 220px;
+    }
+    #toggleSidebar {
+        font-size: 1.2rem;
+    }
+}

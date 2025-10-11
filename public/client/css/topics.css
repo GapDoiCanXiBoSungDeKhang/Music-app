@@ -1,0 +1,65 @@
+/* =========================
+   Music Cards
+   ========================= */
+.music-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 260px;
+}
+
+.music-card-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.music-card-img .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.music-card-img .title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+
+.music-card-img .desc {
+    font-size: 0.9rem;
+    color: #d1d5db;
+    margin-bottom: 0.75rem;
+}
+
+/* =========================
+       Custom Listen Button (tone tối)
+       ========================= */
+.btn-listen {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.1); /* glass effect */
+    color: #f9fafb;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    backdrop-filter: blur(6px);
+    transition: all 0.3s ease;
+}
+
+.btn-listen:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}

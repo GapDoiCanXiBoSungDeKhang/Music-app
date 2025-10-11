@@ -1,0 +1,176 @@
+/* =========================
+   Song Detail
+   ========================= */
+.song-detail {
+    text-align: center;
+}
+
+.song-detail .song-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.song-detail .song-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin-top: 0.5rem;
+}
+
+.song-detail .song-meta .meta-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: 0.35rem;
+}
+
+/* =========================
+   Song Meta Icons
+   ========================= */
+.song-detail .song-meta .meta-item i {
+    color: #6b7280;
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Active: đổi màu + scale nhỏ → lớn (pop) */
+.song-detail .song-meta .meta-item.button-like.active i {
+    color: #0ddcef;
+    animation: likePop 0.4s forwards;
+}
+
+/* Active: đổi màu + scale nhỏ → lớn (pop) */
+.song-detail .song-meta .meta-item.button-favourite.active i {
+    color: #ef0d0d;
+    animation: likePop 0.4s forwards;
+}
+
+/* Keyframes hiệu ứng pop */
+@keyframes likePop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* =========================
+   Song Play: CD + Player
+   ========================= */
+.song-detail .song-play,
+.song-play {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    margin: 1.5rem 0;
+}
+
+.song-detail .song-play .cover,
+.song-play .cover {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #f3f4f6;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    animation: rotateAlbum 10s linear infinite;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    animation-play-state: paused;
+}
+
+.song-detail .song-play .cover:hover,
+.song-play .cover:hover {
+    transform: scale(1.05);
+}
+
+.song-detail .song-play .cover img,
+.song-play .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.song-detail .song-play .inner-audio,
+.song-play .inner-audio {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+#aplayer {
+    width: 600px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+@keyframes rotateAlbum {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* =========================
+   Song Description + Lyrics
+   ========================= */
+.song-detail .song-desc,
+.song-detail .song-lyrics {
+    background: #f9fafb;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 1.5rem;
+}
+
+.song-detail .song-lyrics pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    margin: 0;
+}
+
+/* Font chỉnh nhẹ trong player */
+.aplayer .aplayer-info {
+    font-size: 15px;
+}
+
+/* =========================
+   Mobile Responsive
+   ========================= */
+@media (max-width: 767.98px) {
+    .song-detail .song-title {
+        font-size: 1.4rem;
+    }
+
+    .song-detail .song-meta {
+        font-size: 0.85rem;
+        gap: 0.6rem 1rem;
+    }
+
+    .song-detail .song-play,
+    .song-play {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .song-detail .song-play .cover,
+    .song-play .cover {
+        width: 160px;
+        height: 160px;
+        border-width: 4px;
+    }
+
+    .song-detail .song-play .inner-audio,
+    .song-play .inner-audio {
+        width: 100%;
+    }
+
+    #aplayer {
+        max-width: 360px;
+    }
+}

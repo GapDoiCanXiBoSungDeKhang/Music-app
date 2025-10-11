@@ -1,0 +1,89 @@
+/* =========================
+   Song Cards (fix mobile + icons)
+   ========================= */
+.song-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1f2937;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    height: 220px;
+}
+
+.song-card-img {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.song-card-img .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.75),
+            rgba(0, 0, 0, 0.25)
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1rem;
+    color: #fff;
+}
+
+.song-card-img .title a {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+}
+.song-card-img .title a:hover {
+    text-decoration: underline;
+}
+
+.song-card-img .singer {
+    font-size: 0.9rem;
+    color: #d1d5db;
+    margin: 0.25rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+}
+.song-card-img .singer i {
+    margin-right: 0.35rem;
+    color: #60a5fa;
+}
+
+.song-card-img .meta {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    font-size: 0.85rem;
+    color: #d1d5db;
+}
+.song-card-img .meta span {
+    display: flex;
+    align-items: center;
+}
+.song-card-img .meta i {
+    margin-right: 0.35rem;
+    color: #9ca3af;
+}
+.song-card-img .meta .like i {
+    color: #eeebeb; /* like */
+}
+.song-card-img .meta .view i {
+    color: #9ccfec; /* view */
+}
+.song-card-img .meta .time i {
+    color: #8e8c83; /* time */
+}
+
+/* Fix spacing khi xuống mobile */
+@media (max-width: 767.98px) {
+    .song-card {
+        margin-bottom: 1rem;
+        height: 200px;
+    }
+}
