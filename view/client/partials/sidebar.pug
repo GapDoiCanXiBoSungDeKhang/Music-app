@@ -1,0 +1,9 @@
+//- Sidebar
+aside#sidebar.hidden
+  ul.list-group.list-group-flush
+    each url in ['songs', 'topics']
+      li.list-group-item
+        a(href='/'+url)= url
+
+//- Backdrop
+div#sidebar-backdrop

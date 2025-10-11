@@ -1,0 +1,21 @@
+extends ../../layouts/auth.pug
+include ../../mixins/box-head
+
+block auth
+    .auth-container
+        .auth-card
+            +box-head("Đăng nhập")
+            form(action="/auth/login" method="POST")
+                .form-group
+                    label(for="email") Email
+                    input#email(type="email" name="email" placeholder="Nhập email..." required)
+
+                .form-group
+                    label(for="password") Mật khẩu
+                    input#password(type="password" name="password" placeholder="Nhập mật khẩu..." required)
+
+                button.btn-primary(type="submit") Đăng nhập
+
+            p.auth-footer
+                | Chưa có tài khoản?
+                a(href="/auth/register") Đăng ký ngay

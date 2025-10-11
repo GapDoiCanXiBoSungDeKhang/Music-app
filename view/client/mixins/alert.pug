@@ -1,0 +1,21 @@
+- if (messages.success)
+    .toast.toast-success
+        i.fas.fa-check-circle
+        span= messages.success
+
+- if (messages.error)
+    .toast.toast-error
+        i.fas.fa-times-circle
+        span= messages.error
+
+script.
+    setTimeout(() => {
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(toast => {
+            toast.style.opacity = '0'; // fade out
+            toast.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        });
+    }, 3000);

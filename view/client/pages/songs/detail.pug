@@ -1,0 +1,45 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head
+
+block content
+  .song-detail
+    .container.my-4
+      .row
+        .col-12
+          +box-head("Chi tiết bài hát")
+
+          h2.song-title= song.title
+
+          .song-meta.mt-3
+            span.meta-item
+              i.far.fa-eye
+              | #{song.views} lượt xem
+            span.meta-item
+              i.far.fa-clock
+              | #{song.time ? song.time : '00:00'}
+            span.meta-item
+              i.fas.fa-microphone-alt
+              | #{song.singerId.fullName}
+            span.meta-item
+              i.fas.fa-music
+              | #{song.topicId}
+            span.meta-item.button-like
+              i.fas.fa-thumbs-up
+              span(data-id=song._id) #{song.likes} lượt thích
+            span.meta-item.button-favourite
+              i.far.fa-heart
+              | Yêu thích
+
+          .song-play.mt-4
+            .cover
+              img(src=song.avatar, alt=song.title)
+            .inner-audio
+              div(id="aplayer" data=song)
+
+          .song-desc.mt-4
+            h5 Mô tả
+            p.text-muted !{song.description}
+
+          .song-lyrics.mt-4
+            h5 Lời bài hát
+            pre.lyrics !{song.lyrics}

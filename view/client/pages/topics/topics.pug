@@ -1,0 +1,19 @@
+extends ../../layouts/default
+include ../../mixins/box-head
+
+block content
+  .container
+    .row
+      .col-md-12
+        +box-head("Danh sách chủ đề")
+        p.text-muted.text-center Khám phá chủ đề âm nhạc nổi bật
+
+        .row.g-4.mt-3
+          each item in topics
+            .col-md-4.mb-4
+              .music-card
+                .music-card-img(style=`background-image: url('${item.avatar}')`)
+                  .overlay
+                    h5.title= item.title
+                    p.desc= item.description
+                    a.btn-listen(href=`/songs/${item.slug}`) Nghe ngay
