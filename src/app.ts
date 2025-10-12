@@ -1,19 +1,23 @@
 import express, { Application } from 'express';
 import path from 'path';
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 
-// Load environment variables
+// 🟢 Load environment variables
 dotenv.config();
 
 import routeClient from './client/route/index.route';
 import { connect } from './config/database';
 
-// Database
+// 🟢 Database
 connect(process.env.DATABASE_URL);
 
-// Initialize Express
+// 🟢 Initialize Express
 const app: Application = express();
 const port = process.env.PORT || 3000;
+
+// 🟢 parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded())
 
 // 🟢 View engine
 app.set('view engine', 'pug');

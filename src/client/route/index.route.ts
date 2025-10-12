@@ -13,5 +13,5 @@ export default (app: Application)  => {
 
     app.use('/singer', singerRoute);
 
-    app.use('/user', userRoute);
+    app.use('/auth', userRoute);
 }

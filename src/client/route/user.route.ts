@@ -6,6 +6,8 @@ const router = Router();
 import { controller } from '../controller/user.controller'
 const controllerInstance = new controller();
 
-router.get('/', controllerInstance.index)
+router.get('/register', controllerInstance.register);
+
+router.get('/login', controllerInstance.login);
 
 export default router;
