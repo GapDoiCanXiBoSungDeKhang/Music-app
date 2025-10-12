@@ -15,7 +15,7 @@ block content
                 .song-card-img(style=`background-image: url('${song.avatar}')`)
                   .overlay
                     h5.title
-                      a(href=`/songs/detail/${song.slug}`)= song.title
+                      a(href=`/song/detail/${song.slug}`)= song.title
                     p.singer
                       i.fas.fa-microphone-alt(aria-hidden="true")
                       |  #{song.singerId.fullName ? song.singerId.fullName : 'Unknown'}

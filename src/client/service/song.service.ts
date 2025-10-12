@@ -24,4 +24,30 @@ export class songService {
             throw new Error('Unable to fetch songs');
         }
     }
+
+    async getOneSong(slug: string, req: any): Promise<ISong | null> {
+        try {
+            const song = await SongModel
+                .findOne({ slug: slug })
+                .exec();
+            if (!song) throw new Error('Song not found');
+
+            // set views
+            if (req.user) {
+                song.views += 1;
+                await song.save();
+            }
+
+            // get topic title
+            const topic = await TopicModel
+                .findOne({ _id: song.topicId })
+                .select('title')
+                .exec();
+            song.topicId = topic?.title || '';
+
+            return song;
+        } catch (err: any) {
+            throw new Error(err.message);
+        }
+    }
 }

@@ -8,4 +8,6 @@ const controllerInstance = new controller();
 
 router.get('/:slug', controllerInstance.index)
 
+router.get('/detail/:slug', controllerInstance.detail)
+
 export default router;

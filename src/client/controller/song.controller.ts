@@ -11,4 +11,12 @@ export class controller {
             songs
         });
     }
+
+    async detail(req: Request, res: Response) {
+        const song = await serviceInstance.getOneSong(req.params.slug, req);
+        res.render('client/pages/songs/detail', {
+            titlePage: 'Chi tiết bài hát',
+            song,
+        })
+    }
 }
