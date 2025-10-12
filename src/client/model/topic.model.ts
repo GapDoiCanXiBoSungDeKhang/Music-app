@@ -12,7 +12,7 @@ export interface ITopic extends Document {
     updatedAt?: Date;
 }
 
-const TopicModel = new Schema<ITopic>({
+const Topic = new Schema<ITopic>({
     title: { type: String, required: true },
     avatar: String,
     description: String,
@@ -24,4 +24,4 @@ const TopicModel = new Schema<ITopic>({
     timestamps: true
 });
 
-export const TopicModel = model<ITopic>('Topic', TopicModel, 'topics');
+export const TopicModel = model<ITopic>('Topic', Topic, 'topics');

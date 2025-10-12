@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import path from 'path';
 import dotenv from 'dotenv';
 
 // Load environment variables
@@ -10,22 +11,21 @@ import { connect } from './config/database';
 // Database
 connect(process.env.DATABASE_URL);
 
-
 // Initialize Express
 const app: Application = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
-// Routes
+// 🟢 View engine
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '../views'));
+
+// 🟢 Static files
+app.use(express.static(path.join(__dirname, '../public')));
+
+// 🟢 Routes
 routeClient(app);
 
-// views
-app.set('views', `${__dirname}/views`);
-app.set('views engine', 'pug');
-
-// static file
-app.use(express.static(`${__dirname}/public`))
-
-// Start the server
+// 🟢 Start the server
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}... {link: http://localhost:${port}}`);
+    console.log(`✅ Server is running on port ${port} — link: http://localhost:${port}`);
 });

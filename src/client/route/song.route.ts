@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 
 const router = Router();
 
@@ -6,6 +6,6 @@ const router = Router();
 import { controller } from '../controller/song.controller'
 const controllerInstance = new controller();
 
-router.get('/', controllerInstance.index)
+router.get('/:slug', controllerInstance.index)
 
 export default router;
