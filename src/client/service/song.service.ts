@@ -1,5 +1,6 @@
 import { SongModel } from '../model/song.model';
 import { TopicModel } from '../model/topic.model';
+import '../model/singer.model';
 
 import { ISong } from '../model/song.model';
 
@@ -9,14 +10,13 @@ export class songService {
             const topic = await TopicModel.findOne({ slug });
             if (!topic) return [];
 
-            const filter = {
+            const songs = await SongModel.find({
                 topicId: topic._id,
                 deleted: false,
                 status: 'active',
-            };
-
-            const songs = await SongModel.find(filter)
-                .sort({ createdAt: -1 });
+            })
+                .populate('singerId', 'fullName')
+                .exec();
 
             return songs;
         } catch (error) {

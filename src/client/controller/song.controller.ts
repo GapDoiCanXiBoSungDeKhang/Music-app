@@ -5,9 +5,10 @@ const serviceInstance = new songService();
 
 export class controller {
     async index(req: Request, res: Response) {
+        const songs = await serviceInstance.getListSong(req.params.slug);
         res.render('client/pages/songs/list', {
             titlePage: 'Danh sách bài hát',
-            songs: await serviceInstance.getListSong(req.params.slug),
+            songs
         });
     }
 }
