@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, {Application} from 'express';
 import path from 'path';
 import session from 'express-session';
 import passport from 'passport';
@@ -10,7 +10,7 @@ import flash from 'express-flash';
 dotenv.config();
 
 import routeClient from './client/route/index.route';
-import { connect } from './config/database.config';
+import {connect} from './config/database.config';
 import './config/passport.config';
 
 // 🟢 Database
@@ -26,7 +26,7 @@ app.use(
         secret: process.env.SESSION_SECRET as string,
         resave: false,
         saveUninitialized: false,
-        cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 ngày
+        cookie: {maxAge: 1000 * 60 * 60 * 24 * 7}, // 1 ngày
     })
 );
 app.use(passport.initialize());
@@ -36,7 +36,7 @@ app.use(passport.session());
 app.use(flash())
 
 // 🟢 Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 
 // 🟢 View engine
 app.set('view engine', 'pug');
