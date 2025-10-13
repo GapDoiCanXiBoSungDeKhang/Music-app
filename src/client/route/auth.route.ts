@@ -10,7 +10,7 @@ const controllerInstance = new controller();
 
 router.get('/register', controllerInstance.register);
 
-router.post('register', controllerInstance.registerPost);
+router.post('/register', controllerInstance.registerPost);
 
 router.get('/login', controllerInstance.login);
 

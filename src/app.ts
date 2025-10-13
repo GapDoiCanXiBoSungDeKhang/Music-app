@@ -23,7 +23,7 @@ const port = process.env.PORT;
 // 🟢 Session Passport
 app.use(
     session({
-        secret: process.env.SESSION_SECRET as string,
+        secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {maxAge: 1000 * 60 * 60 * 24 * 7}, // 1 ngày
@@ -33,10 +33,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // 🟢 Flash
-app.use(flash())
+app.use(flash());
 
 // 🟢 Parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({extended: true}));
 
 // 🟢 View engine
 app.set('view engine', 'pug');
