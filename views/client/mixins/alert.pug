@@ -12,7 +12,7 @@ script.
     setTimeout(() => {
         const toasts = document.querySelectorAll('.toast');
         toasts.forEach(toast => {
-            toast.style.opacity = '0'; // fade out
+            toast.style.opacity = '0';
             toast.style.transform = 'translateY(-10px)';
             setTimeout(() => {
                 toast.remove();

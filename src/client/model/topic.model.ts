@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import {Schema, model, Document} from 'mongoose';
 
 export interface ITopic extends Document {
     title: string;
@@ -13,12 +13,12 @@ export interface ITopic extends Document {
 }
 
 const Topic = new Schema<ITopic>({
-    title: { type: String, required: true },
+    title: {type: String, required: true},
     avatar: String,
     description: String,
-    slug: { type: String, trim: true, unique: true, lowercase: true },
-    status: { type: String, enum: ['active', 'inactive'], default: 'active' },
-    deleted: { type: Boolean, default: false },
+    slug: {type: String, trim: true, unique: true, lowercase: true},
+    status: {type: String, enum: ['active', 'inactive'], default: 'active'},
+    deleted: {type: Boolean, default: false},
     deletedAt: Date
 }, {
     timestamps: true

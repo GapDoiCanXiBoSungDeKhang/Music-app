@@ -12,4 +12,11 @@ export class controller {
             titlePage: 'Trang đăng nhập',
         });
     }
+
+    // logout(req: Request, res: Response) {
+    //     req.logout((err) => {
+    //         if (err) return req.flash('error', 'Lỗi xung đột, xin hãy thử lại!');
+    //         res.redirect('/auth/login');
+    //     })
+    // }
 }

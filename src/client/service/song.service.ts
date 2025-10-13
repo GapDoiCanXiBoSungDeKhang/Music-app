@@ -1,13 +1,13 @@
-import { SongModel } from '../model/song.model';
-import { TopicModel } from '../model/topic.model';
+import {SongModel} from '../model/song.model';
+import {TopicModel} from '../model/topic.model';
 import '../model/singer.model';
 
-import { ISong } from '../model/song.model';
+import {ISong} from '../model/song.model';
 
 export class songService {
     async getListSong(slug: string): Promise<ISong[]> {
         try {
-            const topic = await TopicModel.findOne({ slug });
+            const topic = await TopicModel.findOne({slug});
             if (!topic) return [];
 
             const songs = await SongModel.find({
@@ -28,7 +28,7 @@ export class songService {
     async getOneSong(slug: string, req: any): Promise<ISong | null> {
         try {
             const song = await SongModel
-                .findOne({ slug: slug })
+                .findOne({slug: slug})
                 .exec();
             if (!song) throw new Error('Song not found');
 
@@ -40,7 +40,7 @@ export class songService {
 
             // get topic title
             const topic = await TopicModel
-                .findOne({ _id: song.topicId })
+                .findOne({_id: song.topicId})
                 .select('title')
                 .exec();
             song.topicId = topic?.title || '';

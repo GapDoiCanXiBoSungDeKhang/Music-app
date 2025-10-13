@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 
 // service
-import { TopicService } from '../service/topic.service';
+import {TopicService} from '../service/topic.service';
+
 const serviceInstance = new TopicService();
 
 export class controller {

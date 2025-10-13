@@ -2,30 +2,30 @@ extends ../../layouts/default
 include ../../mixins/box-head
 
 block content
-  .container
-    .row
-      .col-md-12
-        +box-head("Danh sách bài hát")
-        p.text-muted.text-center Thư viện nhạc mới nhất dành cho bạn
+    .container
+        .row
+            .col-md-12
+                +box-head("Danh sách bài hát")
+                p.text-muted.text-center Thư viện nhạc mới nhất dành cho bạn
 
-        .row.g-4.mt-3
-          each song in songs
-            .col-md-6.col-lg-4.col-xl-3
-              .song-card
-                .song-card-img(style=`background-image: url('${song.avatar}')`)
-                  .overlay
-                    h5.title
-                      a(href=`/song/detail/${song.slug}`)= song.title
-                    p.singer
-                      i.fas.fa-microphone-alt(aria-hidden="true")
-                      |  #{song.singerId.fullName ? song.singerId.fullName : 'Unknown'}
-                    .meta
-                      span.like
-                        i.fas.fa-thumbs-up(aria-hidden="true")
-                        |  #{song.likes ? song.likes : 0}
-                      span.view
-                        i.fas.fa-eye(aria-hidden="true")
-                        |  #{song.views ? song.views : 0}
-                      span.time
-                        i.far.fa-clock(aria-hidden="true")
-                        |  #{song.time ? song.time : '00:00'}
+                .row.g-4.mt-3
+                    each song in songs
+                        .col-md-6.col-lg-4.col-xl-3
+                            .song-card
+                                .song-card-img(style=`background-image: url('${song.avatar}')`)
+                                    .overlay
+                                        h5.title
+                                            a(href=`/song/detail/${song.slug}`)= song.title
+                                        p.singer
+                                            i.fas.fa-microphone-alt(aria-hidden="true")
+                                            |  #{song.singerId.fullName ? song.singerId.fullName : 'Unknown'}
+                                        .meta
+                                            span.like
+                                                i.fas.fa-thumbs-up(aria-hidden="true")
+                                                |  #{song.likes ? song.likes : 0}
+                                            span.view
+                                                i.fas.fa-eye(aria-hidden="true")
+                                                |  #{song.views ? song.views : 0}
+                                            span.time
+                                                i.far.fa-clock(aria-hidden="true")
+                                                |  #{song.time ? song.time : '00:00'}

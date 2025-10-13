@@ -1,9 +1,10 @@
-import { Router } from 'express';
+import {Router} from 'express';
 
 const router = Router();
 
 // controller
-import { controller } from '../controller/singer.controller'
+import {controller} from '../controller/singer.controller'
+
 const controllerInstance = new controller();
 
 router.get('/', controllerInstance.index)

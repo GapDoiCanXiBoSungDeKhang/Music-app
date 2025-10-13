@@ -1,6 +1,7 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 
-import { songService } from '../service/song.service';
+import {songService} from '../service/song.service';
+
 const serviceInstance = new songService();
 
 export class controller {

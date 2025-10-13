@@ -1,9 +1,10 @@
-import { Router } from 'express';
+import {Router} from 'express';
 
 const router = Router();
 
 // controller
-import { controller } from '../controller/song.controller'
+import {controller} from '../controller/song.controller'
+
 const controllerInstance = new controller();
 
 router.get('/:slug', controllerInstance.index)
