@@ -13,10 +13,10 @@ export class controller {
         });
     }
 
-    // logout(req: Request, res: Response) {
-    //     req.logout((err) => {
-    //         if (err) return req.flash('error', 'Lỗi xung đột, xin hãy thử lại!');
-    //         res.redirect('/auth/login');
-    //     })
-    // }
+    logout(req: Request, res: Response) {
+        req.logout((err) => {
+            if (err) return req.flash('error', 'Lỗi xung đột, xin hãy thử lại!');
+            res.redirect('/auth/login');
+        })
+    }
 }
