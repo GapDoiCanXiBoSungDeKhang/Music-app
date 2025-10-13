@@ -19,21 +19,21 @@ connect(process.env.DATABASE_URL);
 // 🟢 Initialize Express
 const app: Application = express();
 const port = process.env.PORT;
-//
-// // 🟢 Session Passport
-// app.use(
-//     session({
-//         secret: 'secret-key',
-//         resave: false,
-//         saveUninitialized: false,
-//         cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 ngày
-//     })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
-//
-// // 🟢 Flash
-// app.use(flash())
+
+// 🟢 Session Passport
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET as string,
+        resave: false,
+        saveUninitialized: false,
+        cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }, // 1 ngày
+    })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+// 🟢 Flash
+app.use(flash())
 
 // 🟢 Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
