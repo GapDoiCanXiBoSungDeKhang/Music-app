@@ -5,8 +5,9 @@ export interface IUser extends Document {
     password: string;
     email: string;
     avatar?: string;
-    listLikesSong?: string[];
-    listFavoritesSong?: string[];
+    listLikesSong: string;
+    listFavoritesSong: string;
+    listViewsSong: boolean;
     status?: 'active' | 'inactive';
     deleted?: boolean;
     createdAt?: Date;
@@ -30,14 +31,9 @@ const UserSchema = new Schema<IUser>(
         avatar: {
             type: String,
         },
-        listLikesSong: {
-            type: [String],
-            default: [],
-        },
-        listFavoritesSong: {
-            type: [String],
-            default: [],
-        },
+        listLikesSong: String,
+        listFavoritesSong: String,
+        listViewsSong: String,
         status: {
             type: String,
             enum: ['active', 'inactive'],
