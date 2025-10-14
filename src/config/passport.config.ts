@@ -19,6 +19,7 @@ passport.use(
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (!isMatch) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
 
+                delete user.password;
                 done(null, user, {message: 'Đăng nhập thành công!'});
             } catch (err) {
                 done(err);
@@ -35,7 +36,7 @@ passport.serializeUser((user: any, done) => {
 // Deserialize user (lấy thông tin user từ id)
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await UserModel.findById(id).exec();
+        const user = await UserModel.findById(id).select('-password').exec();
         done(null, user);
     } catch (err) {
         done(err);

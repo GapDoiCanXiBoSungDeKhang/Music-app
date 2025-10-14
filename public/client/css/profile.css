@@ -1,0 +1,61 @@
+/* ===== Hồ sơ cá nhân ===== */
+.card {
+    background: #ffffff;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+}
+
+h3.text-primary {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+hr {
+    opacity: 0.15;
+    border-top: 2px solid #007bff22;
+}
+
+img.rounded-circle {
+    border: 3px solid #007bff30;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img.rounded-circle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+}
+
+.btn-outline-primary.btn-sm {
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.9rem;
+    transition: all 0.25s ease;
+}
+
+.btn-outline-primary.btn-sm:hover {
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 123, 255, 0.3);
+}
+
+/* Label & Value */
+dl.row dt {
+    font-weight: 600;
+    color: #495057;
+}
+
+dl.row dd {
+    color: #666;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .col-md-3.text-center {
+        margin-bottom: 1.5rem;
+    }
+}

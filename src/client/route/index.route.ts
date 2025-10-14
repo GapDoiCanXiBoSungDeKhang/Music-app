@@ -5,13 +5,19 @@ import topicRoute from './topic.route';
 import songRoute from './song.route';
 import userRoute from './auth.route';
 import singerRoute from './singer.route';
+import profileRoute from './profile.route';
+
+// middleware
+import {isAuthenticated} from '../../middleware/auth.middleware'
 
 export default (app: Application) => {
-    app.use('/topic', topicRoute);
+    app.use('/topic', isAuthenticated, topicRoute);
 
-    app.use('/song', songRoute);
+    app.use('/song', isAuthenticated, songRoute);
 
-    app.use('/singer', singerRoute);
+    app.use('/singer', isAuthenticated, singerRoute);
+
+    app.use('/profile', isAuthenticated, profileRoute);
 
     app.use('/auth', userRoute);
 }

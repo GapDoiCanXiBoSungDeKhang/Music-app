@@ -23,6 +23,8 @@ router.post(
     })
 );
 
+router.get('/debug', controllerInstance.debug);
+
 router.get('/logout', controllerInstance.logout);
 
 export default router;
