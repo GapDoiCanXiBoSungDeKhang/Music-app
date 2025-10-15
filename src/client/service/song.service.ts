@@ -3,10 +3,12 @@ import {Schema} from 'mongoose';
 import {SongModel} from '../model/song.model';
 import {TopicModel} from '../model/topic.model';
 import {SongLikeModel} from '../model/songLike.model';
+import {SongViewModel} from '../model/songView.model';
 
 import '../model/singer.model';
 
 import {ISong} from '../model/song.model';
+import { IUser } from "../model/user.model";
 
 export class songService {
     async getListSong(slug: string): Promise<ISong[]> {
@@ -29,7 +31,7 @@ export class songService {
         }
     }
 
-    async getOneSong(slug: string, req: any): Promise<ISong | null> {
+    async getOneSong(slug: string, user: IUser): Promise<ISong | null> {
         try {
             const song = await SongModel
                 .findOne({slug: slug})
@@ -37,9 +39,12 @@ export class songService {
             if (!song) throw new Error('Song not found');
 
             // set views
-            if (req.user) {
-                song.views += 1;
-                await song.save();
+            if (!user.listViewsSong["listId"].includes(song._id)) {
+                song.views += 1; await song.save();
+                await SongViewModel.findByIdAndUpdate(
+                    user.listViewsSong,
+                    { $push: { listId: song._id } }
+                )
             }
 
             // get topic title

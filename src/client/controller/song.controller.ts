@@ -16,7 +16,9 @@ export class controller {
     }
 
     async detail(req: Request, res: Response) {
-        const song = await serviceInstance.getOneSong(req.params.slug, req);
+        const {slug} = req.params;
+        const user = req.user as IUser;
+        const song = await serviceInstance.getOneSong(slug, user);
         res.render('client/pages/songs/detail', {
             titlePage: 'Chi tiết bài hát',
             song,
