@@ -3,6 +3,9 @@ import {Strategy as localStrategy} from 'passport-local';
 import bcrypt from 'bcrypt';
 
 import {UserModel} from '../client/model/user.model';
+import '../client/model/songLike.model';
+import '../client/model/songFavourite.model';
+import '../client/model/songView.model';
 
 passport.use(
     new localStrategy(
@@ -35,7 +38,12 @@ passport.serializeUser((user: any, done) => {
 // Deserialize user (lấy thông tin user từ id)
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await UserModel.findById(id).select('-password').exec();
+        const user = await UserModel.findById(id)
+            .populate('listLikesSong', 'listId')
+            .populate('listFavoritesSong', 'listId')
+            .populate('listViewsSong', 'listId')
+            .select('-password')
+            .exec();
         done(null, user);
     } catch (err) {
         done(err);

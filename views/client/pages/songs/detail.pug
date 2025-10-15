@@ -23,7 +23,9 @@ block content
                         span.meta-item
                             i.fas.fa-music
                             | #{song.topicId}
-                        span.meta-item.button-like
+                        span.meta-item.button-like(
+                            class={active: user.listLikesSong.listId.includes(song._id)}
+                        )
                             i.fas.fa-thumbs-up
                             span(data-id=song._id) #{song.likes} lượt thích
                         span.meta-item.button-favourite
