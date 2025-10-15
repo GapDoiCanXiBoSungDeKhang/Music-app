@@ -6,8 +6,13 @@ const router = Router();
 import {controller} from '../controller/song.controller'
 const controllerInstance = new controller();
 
-router.get('/:slug', controllerInstance.index)
+// validate
+import {updatedLikeSongUser} from '../../validate/auth.validate';
 
-router.get('/detail/:slug', controllerInstance.detail)
+router.get('/:slug', controllerInstance.index);
+
+router.get('/detail/:slug', updatedLikeSongUser, controllerInstance.detail);
+
+router.patch('/like/:type_like/:id', updatedLikeSongUser, controllerInstance.updatedLike)
 
 export default router;

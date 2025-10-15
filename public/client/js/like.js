@@ -6,7 +6,7 @@ if (likeBtn) {
         const getDataID = span.getAttribute('data-id');
         const isActive = likeBtn.classList.contains('active');
         const typeLike = isActive ? 'dislike' : 'like';
-        const link = `/songs/like/${typeLike}/${getDataID}`;
+        const link = `/song/like/${typeLike}/${getDataID}`;
 
         try {
             const res = await fetch(link, { method: 'PATCH' });

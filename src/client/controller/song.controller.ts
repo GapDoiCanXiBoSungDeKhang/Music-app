@@ -2,6 +2,8 @@ import {Request, Response} from 'express';
 
 import {songService} from '../service/song.service';
 
+import {IUser} from '../model/user.model'
+
 const serviceInstance = new songService();
 
 export class controller {
@@ -21,4 +23,13 @@ export class controller {
         })
     }
 
+    async updatedLike(req: Request, res: Response) {
+        const { type_like, id } = req.params;
+        const user = req.user as IUser;
+        const song = await serviceInstance.updatedLike(type_like, id, user.listLikesSong);
+        res.status(200).json({
+            message: 'Cập nhập thông tin',
+            likes: song
+        });
+    }
 }

@@ -1,5 +1,9 @@
+import {Schema} from 'mongoose';
+
 import {SongModel} from '../model/song.model';
 import {TopicModel} from '../model/topic.model';
+import {SongLikeModel} from '../model/songLike.model';
+
 import '../model/singer.model';
 
 import {ISong} from '../model/song.model';
@@ -50,4 +54,26 @@ export class songService {
             throw new Error(err.message);
         }
     }
+
+    async updatedLike(typeLike: string, songId: string, songLikeId: Schema.Types.ObjectId): Promise<number> {
+        try {
+            const updatedSong = await SongModel.findByIdAndUpdate(
+                songId,
+                { $inc: { likes: typeLike === 'dislike' ? -1 : 1 } },
+                { new: true }
+            );
+            if (!updatedSong) throw new Error('Song not found');
+            const updateAction = typeLike === 'dislike' ? '$pull' : '$push';
+
+            await SongLikeModel.findByIdAndUpdate(
+                songLikeId,
+                { [updateAction]: { listId: songId } },
+            );
+
+            return updatedSong.likes;
+        } catch (err: any) {
+            throw new Error(err.message || 'Error updating like');
+        }
+    }
+
 }
