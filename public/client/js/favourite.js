@@ -9,13 +9,16 @@ if (btnFavourite) {
         const link = `/song/favourite/${typeFav}/${getDataID}`;
 
         try {
-            await fetch(link, { method: 'PATCH' });
-
-            btnFavourite.classList.toggle('active');
-            const icon = btnFavourite.querySelector('i');
-            icon.style.animation = 'none';
-            icon.offsetHeight; // force reflow
-            icon.style.animation = ''; // animation sẽ chạy lại
+            fetch(link, { method: 'PATCH' })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.message !== 'success') return;
+                    btnFavourite.classList.toggle('active');
+                    const icon = btnFavourite.querySelector('i');
+                    icon.style.animation = 'none';
+                    icon.offsetHeight; // force reflow
+                    icon.style.animation = ''; // animation sẽ chạy lại
+                });
         } catch (err) {
             console.error('Lỗi khi yêu thích bài hát:', err);
         }

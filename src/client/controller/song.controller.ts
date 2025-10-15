@@ -25,7 +25,7 @@ export class controller {
         })
     }
 
-    async updatedLike(req: Request, res: Response) {
+    async updatedLike(req: Request, res: Response): Promise<void> {
         const {type_like, id} = req.params;
         const user = req.user as IUser;
         const song = await serviceInstance.updatedLike(type_like, id, user.listLikesSong);
@@ -38,5 +38,8 @@ export class controller {
         const {type_fav, id} = req.params;
         const user = req.user as IUser;
         await serviceInstance.updatedFav(type_fav, id, user.listFavoritesSong);
+        res.status(200).json({
+            message: 'success'
+        })
     }
 }
