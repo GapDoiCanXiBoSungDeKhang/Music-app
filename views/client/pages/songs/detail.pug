@@ -28,9 +28,11 @@ block content
                         )
                             i.fas.fa-thumbs-up
                             span(data-id=song._id) #{song.likes} lượt thích
-                        span.meta-item.button-favourite
+                        span.meta-item.button-favourite(
+                            class={active: user.listFavoritesSong.listId.includes(song._id)}
+                        )
                             i.far.fa-heart
-                            | Yêu thích
+                            span(data-id=song._id) Yêu thích
 
                     .song-play.mt-4
                         .cover

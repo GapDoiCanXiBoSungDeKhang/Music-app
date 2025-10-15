@@ -4,6 +4,7 @@ import {SongModel} from '../model/song.model';
 import {TopicModel} from '../model/topic.model';
 import {SongLikeModel} from '../model/songLike.model';
 import {SongViewModel} from '../model/songView.model';
+import {SongFavouriteModel} from '../model/songFavourite.model';
 
 import '../model/singer.model';
 
@@ -81,4 +82,15 @@ export class songService {
         }
     }
 
+    async updatedFav(typeFav: string, songId: string, songFavId: Schema.Types.ObjectId): Promise<void> {
+        try {
+            const updateAction = typeFav === 'disfav' ? '$pull' : '$push';
+            await SongFavouriteModel.findByIdAndUpdate(
+                songFavId,
+                { [updateAction]: { listId: songId } },
+            );
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
 }

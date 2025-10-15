@@ -13,6 +13,8 @@ router.get('/:slug', controllerInstance.index);
 
 router.get('/detail/:slug', updatedLikeSongUser, controllerInstance.detail);
 
-router.patch('/like/:type_like/:id', updatedLikeSongUser, controllerInstance.updatedLike)
+router.patch('/like/:type_like/:id', updatedLikeSongUser, controllerInstance.updatedLike);
+
+router.patch('/favourite/:type_fav/:id', updatedLikeSongUser, controllerInstance.updatedFav);
 
 export default router;
