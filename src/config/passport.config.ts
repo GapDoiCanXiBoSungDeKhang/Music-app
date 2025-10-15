@@ -11,16 +11,15 @@ passport.use(
             try {
                 const user = await UserModel.findOne({
                     email,
-                    status: 'active',
                     deleted: false
                 })
                     .exec();
                 if (!user) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
+                if (user.status === 'inactive') return done(null, false, {message: 'Tài khoản đã bị khóa!'});
                 const isMatch = await bcrypt.compare(password, user.password);
                 if (!isMatch) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
-
                 delete user.password;
-                done(null, user, {message: 'Đăng nhập thành công!'});
+                done(null, user);
             } catch (err) {
                 done(err);
             }
