@@ -4,13 +4,16 @@ import passport from 'passport';
 const router = Router();
 
 // controller
-import {controller} from '../controller/auth.controller'
+import {controller} from '../controller/auth.controller';
+
+// validate
+import {registerValidate} from '../../validate/auth.validate'
 
 const controllerInstance = new controller();
 
 router.get('/register', controllerInstance.register);
 
-router.post('/register', controllerInstance.registerPost);
+router.post('/register', registerValidate, controllerInstance.registerPost);
 
 router.get('/login', controllerInstance.login);
 

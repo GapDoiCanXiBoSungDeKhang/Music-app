@@ -1,5 +1,9 @@
 import bcrypt from 'bcrypt';
+
 import {UserModel} from '../model/user.model';
+import {SongLikeModel} from '../model/songLike.model';
+import {SongViewModel} from '../model/songView.model';
+import {SongFavouriteModel} from '../model/songFavourite.model';
 
 export class authService {
     async register(fullName: string, email: string, password: string) {
@@ -7,10 +11,20 @@ export class authService {
         if (existingUser) return null;
 
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        const [newSongView, newSongFavourite, newSongLike] = await Promise.all([
+            new SongViewModel().save(),
+            new SongFavouriteModel().save(),
+            new SongLikeModel().save(),
+        ]);
+
         const newUser = await UserModel.create({
             fullName,
             email,
             password: hashedPassword,
+            listLikesSong: newSongLike._id,
+            listFavoritesSong: newSongFavourite._id,
+            listViewsSong: newSongView._id,
         });
 
         return newUser;
