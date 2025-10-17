@@ -10,7 +10,7 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
         //- Thanh tìm kiếm ở giữa
         form#searchForm.mx-auto.d-flex.align-items-center(
             role="search",
-            action="/song/search",
+            action="/song/search/result",
             method="GET"
         )
             .search-container.position-relative
@@ -18,7 +18,8 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
                     type="text",
                     name="q",
                     placeholder="Tìm bài hát...",
-                    autocomplete="off"
+                    autocomplete="off",
+                    value=keyword
                 )
                 button#searchBtn.btn.btn-link.position-absolute(type="submit")
                     i.fas.fa-search

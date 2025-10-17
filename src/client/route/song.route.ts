@@ -17,6 +17,6 @@ router.patch('/like/:type_like/:id', updatedLikeSongUser, controllerInstance.upd
 
 router.patch('/favourite/:type_fav/:id', updatedLikeSongUser, controllerInstance.updatedFav);
 
-router.get('/search', controllerInstance.search);
+router.get('/search/result', controllerInstance.search);
 
 export default router;

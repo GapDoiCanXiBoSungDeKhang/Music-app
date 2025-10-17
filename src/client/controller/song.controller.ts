@@ -22,7 +22,7 @@ export class controller {
         res.render('client/pages/songs/detail', {
             titlePage: 'Chi tiết bài hát',
             song,
-        })
+        });
     }
 
     async updatedLike(req: Request, res: Response): Promise<void> {
@@ -44,6 +44,11 @@ export class controller {
     }
 
     async search(req: Request, res: Response) {
-
+        const songs = await serviceInstance.search(req.query.q as string);
+        res.render('client/pages/songs/search', {
+            titlePage: 'Trang tìm kiếm',
+            keyword: req.query.q,
+            songs
+        })
     }
 }

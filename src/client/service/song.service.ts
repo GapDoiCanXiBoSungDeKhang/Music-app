@@ -93,4 +93,18 @@ export class songService {
             throw new Error(err.message);
         }
     }
+
+    async search(q: string) {
+        try {
+            const filter = {status: 'active', deleted: false};
+            if (q) filter['title'] = new RegExp(q, 'i');
+
+            const songs = await SongModel.find(filter)
+                .populate('singerId', 'fullName')
+                .exec();
+            return songs;
+        } catch (err) {
+            throw new Error(err.message);
+        }
+    }
 }
