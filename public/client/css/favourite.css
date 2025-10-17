@@ -1,0 +1,53 @@
+/* =========================
+   Song Card Meta Icons
+   ========================= */
+
+/* Container meta: canh giữa, giãn khoảng cách giữa các nút */
+.song-card .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+/* Từng item: biểu tượng + text */
+.song-card .meta .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Icon mặc định */
+.song-card .meta .meta-item i {
+    font-size: 1.1rem;
+    color: #6b7280;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Khi hover: đổi màu nhẹ */
+.song-card .meta .meta-item:hover i {
+    color: #0ddcef;
+}
+
+/* Active trạng thái Yêu thích */
+.song-card .meta .meta-item.button-favourite.active i {
+    color: #ef0d0d;
+    animation: likePop 0.4s forwards;
+}
+
+/* Hiệu ứng pop (scale nhỏ -> lớn -> về lại bình thường) */
+@keyframes likePop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* Tùy chọn thêm: khoảng cách đều cho các meta-item */
+.song-card .meta .meta-item + .meta-item {
+    margin-left: 10px;
+}

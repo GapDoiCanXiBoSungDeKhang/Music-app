@@ -10,14 +10,14 @@ nav.navbar.navbar-dark.bg-dark.fixed-top.shadow-sm.py-2
         //- Thanh tìm kiếm ở giữa
         form#searchForm.mx-auto.d-flex.align-items-center(
             role="search",
-            action="/search",
+            action="/song/search",
             method="GET"
         )
             .search-container.position-relative
                 input#searchInput.form-control.rounded-pill(
                     type="text",
                     name="q",
-                    placeholder="Tìm bài hát, nghệ sĩ, album...",
+                    placeholder="Tìm bài hát...",
                     autocomplete="off"
                 )
                 button#searchBtn.btn.btn-link.position-absolute(type="submit")

@@ -40,6 +40,10 @@ export class controller {
         await serviceInstance.updatedFav(type_fav, id, user.listFavoritesSong);
         res.status(200).json({
             message: 'success'
-        })
+        });
+    }
+
+    async search(req: Request, res: Response) {
+
     }
 }
