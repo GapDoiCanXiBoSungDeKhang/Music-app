@@ -2,10 +2,10 @@ import passport from 'passport';
 import {Strategy as localStrategy} from 'passport-local';
 import bcrypt from 'bcrypt';
 
-import {UserModel} from '../client/model/user.model';
-import '../client/model/songLike.model';
-import '../client/model/songFavourite.model';
-import '../client/model/songView.model';
+import {UserModel} from '../model/user.model';
+import '../model/songLike.model';
+import '../model/songFavourite.model';
+import '../model/songView.model';
 
 passport.use(
     new localStrategy(
