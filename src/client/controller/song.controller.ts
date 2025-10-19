@@ -44,10 +44,19 @@ export class controller {
 
     async search(req: Request, res: Response) {
         const songs = await serviceInstance.search(req.query.q as string);
-        res.render('client/pages/songs/search', {
-            titlePage: 'Trang tìm kiếm',
-            keyword: req.query.q,
-            songs
-        })
+        switch (req.params.type) {
+            case 'result':
+                res.render('client/pages/songs/search', {
+                    titlePage: 'Trang tìm kiếm',
+                    keyword: req.query.q,
+                    songs
+                });
+                break;
+            case 'suggest':
+                res.status(200).json({message: 'success', songs});
+                break;
+            default:
+                break;
+        }
     }
 }

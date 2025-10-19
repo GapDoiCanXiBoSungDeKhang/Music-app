@@ -9,7 +9,7 @@ if (likeBtn) {
         const link = `/song/like/${typeLike}/${getDataID}`;
 
         try {
-            const res = await fetch(link, { method: 'PATCH' });
+            const res = await fetch(link, {method: 'PATCH'});
             const data = await res.json();
 
             // Cập nhật số lượt thích

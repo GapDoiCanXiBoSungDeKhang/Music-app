@@ -98,16 +98,19 @@ export class songService {
 
     async search(q: string) {
         try {
+            let songs = [];
             const filter = {status: 'active', deleted: false};
-            const convertText = convertTextToSlug(q);
-            if (q) filter['$or'] = [
-                { title: new RegExp(q, 'i') },
-                { slug: new RegExp(convertText, 'i') },
-            ];
+            if (q) {
+                const convertText = convertTextToSlug(q);
+                filter['$or'] = [
+                    { title: new RegExp(q, 'i') },
+                    { slug: new RegExp(convertText, 'i') },
+                ];
+                songs = await SongModel.find(filter)
+                    .populate('singerId', 'fullName')
+                    .exec();
+            }
 
-            const songs = await SongModel.find(filter)
-                .populate('singerId', 'fullName')
-                .exec();
             return songs;
         } catch (err) {
             throw new Error(err.message);
