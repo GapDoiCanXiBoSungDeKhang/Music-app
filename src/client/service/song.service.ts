@@ -9,7 +9,9 @@ import {SongFavouriteModel} from '../../model/songFavourite.model';
 import '../../model/singer.model';
 
 import {ISong} from '../../model/song.model';
-import { IUser } from "../../model/user.model";
+import {IUser} from '../../model/user.model';
+
+import {convertTextToSlug} from '../../shared/ulti/unidecode.ulti';
 
 export class songService {
     async getListSong(slug: string): Promise<ISong[]> {
@@ -97,7 +99,11 @@ export class songService {
     async search(q: string) {
         try {
             const filter = {status: 'active', deleted: false};
-            if (q) filter['title'] = new RegExp(q, 'i');
+            const convertText = convertTextToSlug(q);
+            if (q) filter['$or'] = [
+                { title: new RegExp(q, 'i') },
+                { slug: new RegExp(convertText, 'i') },
+            ];
 
             const songs = await SongModel.find(filter)
                 .populate('singerId', 'fullName')

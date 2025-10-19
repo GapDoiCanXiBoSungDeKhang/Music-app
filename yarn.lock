@@ -202,6 +202,11 @@
     "@types/node" "*"
     "@types/send" "<1"
 
+"@types/unidecode@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/unidecode/-/unidecode-1.1.0.tgz#c16ad9dde2d1c0266cd44d0f1afb6b4b11d12776"
+  integrity sha512-NTIsFsTe9WRek39/8DDj7KiQ0nU33DHMrKwNHcD1rKlUvn4N0Rc4Di8q/Xavs8bsDZmBa4MMtQA8+HNgwfxC/A==
+
 "@types/webidl-conversions@*":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/webidl-conversions/-/webidl-conversions-7.0.3.tgz#1306dbfa53768bcbcfc95a1c8cde367975581859"
@@ -1360,6 +1365,11 @@ undici-types@~7.14.0:
   version "7.14.0"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.14.0.tgz#4c037b32ca4d7d62fae042174604341588bc0840"
   integrity sha512-QQiYxHuyZ9gQUIrmPo3IA+hUl4KYk8uSA7cHrcKd/l3p1OTpZcM0Tbp9x7FAtXdAYhlasd60ncPpgu6ihG6TOA==
+
+unidecode@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/unidecode/-/unidecode-1.1.0.tgz#0b5f5ddd9b7b1ce3dbc7a24c72150edd63a83a8c"
+  integrity sha512-GIp57N6DVVJi8dpeIU6/leJGdv7W65ZSXFLFiNmxvexXkc0nXdqUvhA/qL9KqBKsILxMwg5MnmYNOIDJLb5JVA==
 
 unpipe@1.0.0:
   version "1.0.0"

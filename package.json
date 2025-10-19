@@ -16,6 +16,7 @@
     "@types/node": "^24.7.1",
     "@types/passport": "^1.0.17",
     "@types/passport-local": "^1.0.38",
+    "@types/unidecode": "^1.1.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -30,6 +31,7 @@
     "mongoose": "^8.19.1",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "pug": "^3.0.3"
+    "pug": "^3.0.3",
+    "unidecode": "^1.1.0"
   }
 }

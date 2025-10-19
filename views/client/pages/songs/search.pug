@@ -5,7 +5,7 @@ block content
     .container
         .row
             .col-md-12
-                +box-head(`Tìm kiếm: ${titlePage}`)
+                +box-head(`Tìm kiếm: ${keyword}`)
                 p.text-muted.text-center Thư viện nhạc mới nhất dành cho bạn
 
                 .row.g-4.mt-3
@@ -28,4 +28,4 @@ block content
                                                 |  #{song.views ? song.views : 0}
                                             span.time
                                                 i.far.fa-clock(aria-hidden="true")
-                                                |  #{song.time ? song.time : '00:00'}
+                                                |  #{song.createdAt ? song.createdAt : '00:00'}
