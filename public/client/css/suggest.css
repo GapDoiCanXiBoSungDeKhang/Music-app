@@ -1,0 +1,86 @@
+/* Wrapper chứa input và dropdown suggest */
+.search-container {
+    position: relative;
+}
+
+/* Dropdown gợi ý bài hát */
+.inner-suggest {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    margin-top: 8px;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Danh sách các gợi ý */
+.inner-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Từng mục gợi ý */
+.inner-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease;
+}
+
+.inner-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Hình ảnh bài hát */
+.inner-image {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-right: 14px;
+}
+
+.inner-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Thông tin bài hát */
+.inner-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Tên bài hát */
+.inner-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+/* Tên ca sĩ */
+.inner-singer {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    gap: 5px;
+}
+
+.inner-singer i {
+    color: #888;
+    font-size: 14px;
+}
