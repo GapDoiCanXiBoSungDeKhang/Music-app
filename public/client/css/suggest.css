@@ -3,8 +3,9 @@
     position: relative;
 }
 
-/* Dropdown gợi ý bài hát */
+/* Dropdown gợi ý bài hát (ẩn mặc định) */
 .inner-suggest {
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -15,6 +16,11 @@
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Hiển thị khi có class .show */
+.inner-suggest.show {
+    display: block;
 }
 
 /* Danh sách các gợi ý */
