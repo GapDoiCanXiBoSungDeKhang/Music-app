@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 
-import {IUser} from '../../model/user.model';
+import {IUser} from '../../../common/model/user.model';
 
 import {favouriteService} from '../service/favourite.service'
 const favouriteInstance = new favouriteService();

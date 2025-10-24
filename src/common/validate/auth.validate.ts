@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 
-import {isValidPassword} from '../shared/ulti/isPass.ulti'
+import {isValidPassword} from '../../shared/ulti/isPass.ulti'
 
 export const registerValidate = (req: Request, res: Response, next: NextFunction) => {
     if (!req.body.fullName) {

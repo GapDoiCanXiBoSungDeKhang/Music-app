@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
 
-import {UserModel} from '../../model/user.model';
-import {SongLikeModel} from '../../model/songLike.model';
-import {SongViewModel} from '../../model/songView.model';
-import {SongFavouriteModel} from '../../model/songFavourite.model';
+import {UserModel} from '../../../common/model/user.model';
+import {SongLikeModel} from '../../../common/model/songLike.model';
+import {SongViewModel} from '../../../common/model/songView.model';
+import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
 
 export class authService {
     async register(fullName: string, email: string, password: string) {

@@ -5,7 +5,7 @@ const router = Router();
 import {controller} from '../controller/favourite.controller';
 const controllerInstance = new controller();
 
-import {updatedLikeSongUser} from '../../validate/songView.validate';
+import {updatedLikeSongUser} from '../../../common/validate/songView.validate';
 
 router.get('/', updatedLikeSongUser, controllerInstance.index);
 

@@ -9,8 +9,8 @@ import profileRoute from './profile.route';
 import favouriteRoute from './favourite.route';
 
 // middleware
-import {isAuthenticated} from '../../middleware/auth.middleware';
-import prefixNameConfig from '../../config/prefixName.config';
+import {isAuthenticated} from '../../../common/middleware/auth.middleware';
+import prefixNameConfig from '../../../common/config/prefixName.config';
 
 export default (app: Application) => {
     app.use(prefixNameConfig.PATH_ADMIN + '/topic', isAuthenticated, topicRoute);

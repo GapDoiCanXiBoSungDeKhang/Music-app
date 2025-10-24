@@ -7,7 +7,7 @@ const router = Router();
 import {controller} from '../controller/auth.controller';
 
 // validate
-import {registerValidate} from '../../validate/auth.validate'
+import {registerValidate} from '../../../common/validate/auth.validate'
 
 const controllerInstance = new controller();
 

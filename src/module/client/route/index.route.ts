@@ -9,7 +9,7 @@ import profileRoute from './profile.route';
 import favouriteRoute from './favourite.route';
 
 // middleware
-import {isAuthenticated} from '../../middleware/auth.middleware'
+import {isAuthenticated} from '../../../common/middleware/auth.middleware'
 
 export default (app: Application) => {
     app.use('/topic', isAuthenticated, topicRoute);

@@ -9,10 +9,10 @@ import flash from 'express-flash';
 // 🟢 Load environment variables
 dotenv.config();
 
-import routeClient from './client/route/index.route';
-import {connect} from './config/database.config';
-import './config/passport.config';
-import prefixNameConfig from './config/prefixName.config';
+import routeClient from './module/client/route/index.route';
+import {connect} from './common/config/database.config';
+import './common/config/passport.config';
+import prefixNameConfig from './common/config/prefixName.config';
 
 // 🟢 Database
 connect(process.env.DATABASE_URL);

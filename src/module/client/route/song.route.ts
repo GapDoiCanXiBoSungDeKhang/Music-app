@@ -7,7 +7,7 @@ import {controller} from '../controller/song.controller'
 const controllerInstance = new controller();
 
 // validate
-import {updatedLikeSongUser} from '../../validate/songView.validate';
+import {updatedLikeSongUser} from '../../../common/validate/songView.validate';
 
 router.get('/:slug', controllerInstance.index);
 

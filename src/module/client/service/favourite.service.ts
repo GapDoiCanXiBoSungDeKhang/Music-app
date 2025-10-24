@@ -1,6 +1,6 @@
-import {SongModel} from '../../model/song.model';
-import '../../model/singer.model';
-import { IUser } from "../../model/user.model";
+import {SongModel} from '../../../common/model/song.model';
+import '../../../common/model/singer.model';
+import { IUser } from "../../../common/model/user.model";
 
 export class favouriteService {
     async favourite(user: IUser) {
