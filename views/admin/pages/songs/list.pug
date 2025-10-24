@@ -13,9 +13,9 @@ block content
         .card.shadow-sm.rounded-4.border-0
             .card-body.p-4
                 .search-container
-                    .search-box
+                    form.search-box(action= prefixName + '/song', method='GET')
                         i.fas.fa-search
-                        input(type='text', placeholder='Tìm kiếm bài hát...')
+                        input(type='text', name='q', placeholder='Tìm kiếm bài hát...')
                     select.filter-select
                         option(value='all' selected) Tất cả
                         option(value='active') Active
@@ -24,24 +24,26 @@ block content
                 table.table.align-middle.mt-4
                     thead
                         tr
-                            th.text-center IMAGE
-                            th NAME
-                            th SINGER
-                            th TOPIC
-                            th.text-center VIEWS
-                            th.text-center LIKES
-                            th.text-center STATUS
-                            th.text-center ACTIONS
+                            th STT
+                            th.text-center hình ảnh
+                            th tiêu đề
+                            th ca sĩ
+                            th chủ đề
+                            th.text-center nghe
+                            th.text-center thích
+                            th.text-center trạng thái
+                            th.text-center hành động
                     tbody
                         if songs && songs.length
                             each song, index in songs
                                 tr
+                                    td #{index + 1}
                                     td.text-center
-                                        img.song-thumbnail(src=song.thumbnail || '/images/no-image.png', alt=song.name)
+                                        img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
                                     td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=`/admin/songs/edit/${song._id}`)= song.name
-                                    td= song.singerName || '-'
-                                    td= song.topicName || '-'
+                                        a.text-decoration-none.text-primary.fw-semibold(href=`/admin/songs/edit/${song._id}`)= song.title
+                                    td= song.singerId.fullName || '-'
+                                    td= song.topicId || '-'
                                     td.text-center #{song.views ? song.views.toLocaleString() : 0}
                                     td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
                                     td.text-center

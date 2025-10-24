@@ -1,18 +1,31 @@
-import {Schema} from 'mongoose';
-
 import {SongModel} from '../../../common/model/song.model';
 import {TopicModel} from '../../../common/model/topic.model';
-import {SongLikeModel} from '../../../common/model/songLike.model';
-import {SongViewModel} from '../../../common/model/songView.model';
-import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
 
 import '../../../common/model/singer.model';
 
 import {ISong} from '../../../common/model/song.model';
-import {IUser} from '../../../common/model/user.model';
-
-import {convertTextToSlug} from '../../../shared/ulti/unidecode.ulti';
 
 export class songService {
+    async index() : Promise<ISong[]> {
+        const filter = {
+            status: 'active',
+            deleted: false,
+        }
+        const songs = await SongModel.find(filter)
+            .populate('singerId', 'fullName')
+            .exec();
 
+        for (const song of songs) {
+            const topic = await TopicModel.findOne({
+                _id: song.topicId,
+                status: 'active',
+                deleted: false,
+            })
+                .select('title')
+                .exec();
+
+            song.topicId = topic.title;
+        }
+        return songs;
+    }
 }

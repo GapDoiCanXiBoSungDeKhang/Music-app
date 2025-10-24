@@ -15,7 +15,7 @@ import prefixNameConfig from '../../../common/config/prefixName.config';
 export default (app: Application) => {
     // app.use(prefixNameConfig.PATH_ADMIN + '/topic', topicRoute);
 
-    app.use(`${prefixNameConfig.PATH_ADMIN}/song`, songRoute);
+    app.use(prefixNameConfig.PATH_ADMIN + '/song', songRoute);
     //
     // app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
     //
