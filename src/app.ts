@@ -12,6 +12,7 @@ dotenv.config();
 import routeClient from './client/route/index.route';
 import {connect} from './config/database.config';
 import './config/passport.config';
+import prefixNameConfig from './config/prefixName.config';
 
 // 🟢 Database
 connect(process.env.DATABASE_URL);
@@ -31,6 +32,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// 🟢 Set prefixName locals views
+app.locals.prefixName = prefixNameConfig.PATH_ADMIN;
 
 // 🟢 Flash
 app.use(flash());
