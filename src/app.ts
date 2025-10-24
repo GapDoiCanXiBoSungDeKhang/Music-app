@@ -10,6 +10,8 @@ import flash from 'express-flash';
 dotenv.config();
 
 import routeClient from './module/client/route/index.route';
+import routeServer from './module/admin/route/index.route';
+
 import {connect} from './common/config/database.config';
 import './common/config/passport.config';
 import prefixNameConfig from './common/config/prefixName.config';
@@ -51,6 +53,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // 🟢 Routes
 routeClient(app);
+routeServer(app);
 
 // 🟢 Start the server
 app.listen(port, () => {

@@ -13,13 +13,13 @@ import {isAuthenticated} from '../../../common/middleware/auth.middleware';
 import prefixNameConfig from '../../../common/config/prefixName.config';
 
 export default (app: Application) => {
-    app.use(prefixNameConfig.PATH_ADMIN + '/topic', isAuthenticated, topicRoute);
+    // app.use(prefixNameConfig.PATH_ADMIN + '/topic', topicRoute);
 
-    app.use(prefixNameConfig.PATH_ADMIN +  '/song', isAuthenticated, songRoute);
-
-    app.use(prefixNameConfig.PATH_ADMIN + '/singer', isAuthenticated, singerRoute);
-
-    app.use(prefixNameConfig.PATH_ADMIN + '/profile', isAuthenticated, profileRoute);
-
-    app.use('/auth', userRoute);
+    app.use(`${prefixNameConfig.PATH_ADMIN}/song`, songRoute);
+    //
+    // app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
+    //
+    // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);
+    //
+    // app.use('/auth', userRoute);
 }

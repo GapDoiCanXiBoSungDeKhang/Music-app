@@ -1,0 +1,59 @@
+extends ../../layouts/default
+
+block content
+    link(rel='stylesheet', href='/admin/css/song.css')
+
+    .container-fluid.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h2.fw-semibold.text-dark.mb-0 Quản lý bài hát
+            a.btn-add(href='/admin/songs/create')
+                i.fas.fa-plus
+                |  Thêm bài hát
+
+        .card.shadow-sm.rounded-4.border-0
+            .card-body.p-4
+                .search-container
+                    .search-box
+                        i.fas.fa-search
+                        input(type='text', placeholder='Tìm kiếm bài hát...')
+                    select.filter-select
+                        option(value='all' selected) Tất cả
+                        option(value='active') Active
+                        option(value='inactive') Inactive
+
+                table.table.align-middle.mt-4
+                    thead
+                        tr
+                            th.text-center IMAGE
+                            th NAME
+                            th SINGER
+                            th TOPIC
+                            th.text-center VIEWS
+                            th.text-center LIKES
+                            th.text-center STATUS
+                            th.text-center ACTIONS
+                    tbody
+                        if songs && songs.length
+                            each song, index in songs
+                                tr
+                                    td.text-center
+                                        img.song-thumbnail(src=song.thumbnail || '/images/no-image.png', alt=song.name)
+                                    td
+                                        a.text-decoration-none.text-primary.fw-semibold(href=`/admin/songs/edit/${song._id}`)= song.name
+                                    td= song.singerName || '-'
+                                    td= song.topicName || '-'
+                                    td.text-center #{song.views ? song.views.toLocaleString() : 0}
+                                    td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
+                                    td.text-center
+                                        if song.status === 'active'
+                                            span.badge.bg-success Active
+                                        else
+                                            span.badge.bg-secondary Inactive
+                                    td.text-center
+                                        a.btn-icon.edit(href=`/admin/songs/edit/${song._id}`)
+                                            i.fas.fa-pen
+                                        a.btn-icon.delete
+                                            i.fas.fa-trash
+                        else
+                            tr
+                                td(colspan='8' class='text-center py-4 text-muted') Không có bài hát nào.
