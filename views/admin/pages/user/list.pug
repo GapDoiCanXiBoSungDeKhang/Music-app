@@ -3,24 +3,24 @@ extends ../../layouts/default
 block content
     .container-fluid.p-4
         .d-flex.justify-content-between.align-items-center.mb-4
-            h2.fw-semibold.text-dark.mb-0 Quản lý bài hát
-            a.btn-add(href= prefixName + '/song/create')
+            h2.fw-semibold.text-dark.mb-0 Quản lý người dùng
+            a.btn-add(href= prefixName + '/user/create')
                 i.fas.fa-plus
-                |  Thêm bài hát
+                |  Thêm người dùng
 
         .card.shadow-sm.rounded-4.border-0
             .card-body.p-4
                 .search-container
-                    form.search-box(action= prefixName + '/song', method='GET')
+                    form.search-box(action= prefixName + '/user', method='GET')
                         i.fas.fa-search
-                        input(type='text', name='q', placeholder='Tìm kiếm bài hát...')
+                        input(type='text', name='q', placeholder='Tìm kiếm người dùng...')
                     .filter-group
-                        form#filterForm(action='/server/song', method='GET', class='filter-form')
+                        form#filterForm(action='/server/user', method='GET', class='filter-form')
                             select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
                                 option(value='all' selected=(status === 'all')) Tất cả
                                 option(value='active' selected=(status === 'active')) Active
                                 option(value='inactive' selected=(status === 'inactive')) Inactive
-                        form#multiActionForm(action='/server/song/change-multi?_method=PATCH', method='POST', style='display:none;')
+                        form#multiActionForm(action='/server/user/change-multi?_method=PATCH', method='POST', style='display:none;')
                             input(type='hidden', name='ids', id='selectedIds')
                             input(type='hidden', name='action', id='selectedAction')
                         select.filter-select.filter-action
@@ -36,52 +36,45 @@ block content
                                 input#selectAll.form-check-input(type='checkbox')
                             th STT
                             th.text-center hình ảnh
-                            th tiêu đề
-                            th ca sĩ
-                            th chủ đề
-                            th.text-center nghe
-                            th.text-center thích
+                            th họ và tên
+                            th email
                             th.text-center trạng thái
                             th.text-center hành động
                     tbody
-                        if songs && songs.length
-                            each song, index in songs
+                        if users && users.length
+                            each user, index in users
                                 tr
                                     td.text-center
-                                        input.form-check-input.song-checkbox(type='checkbox', value=song._id)
+                                        input.form-check-input.song-checkbox(type='checkbox', value=user._id)
                                     td #{index + 1}
                                     td.text-center
-                                        img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
+                                        img.song-thumbnail(src=user.avatar || '/images/no-image.png', alt=user.fullName)
                                     td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=`/server/songs/detail/${song._id}`)= song.title
-                                    td= song.singerId.fullName || '-'
-                                    td= song.topicId || '-'
-                                    td.text-center #{song.views ? song.views.toLocaleString() : 0}
-                                    td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
+                                        a.text-decoration-none.text-primary.fw-semibold(href=`/server/user/detail/${user._id}`)= user.fullName
+                                    td= user.email
                                     td.text-center
-                                        if song.status === 'active'
+                                        if user.status === 'active'
                                             span.badge.bg-success.status-toggle(
-                                                data-id=song._id,
+                                                data-id=user._id,
                                                 data-status='active',
                                                 style='cursor:pointer;'
                                             ) hoạt động
                                         else
                                             span.badge.bg-secondary.status-toggle(
-                                                data-id=song._id,
+                                                data-id=user._id,
                                                 data-status='inactive',
                                                 style='cursor:pointer;'
                                             ) ngưng hoạt động
                                     td.text-center
-                                        a.btn-icon.edit(href=`/server/songs/edit/${song._id}`)
+                                        a.btn-icon.edit(href=`/server/user/edit/${user._id}`)
                                             i.fas.fa-pen
                                         form#singleDeleteForm(action='', method='POST', style='display:none;')
                                             input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=song._id)
+                                        a.btn-icon.delete(data-id=user._id)
                                             i.fas.fa-trash
                         else
                             tr
-                                td(colspan='8' class='text-center py-4 text-muted') Không có bài hát nào.
+                                td(colspan='7' class='text-center py-4 text-muted') Không có người dùng nào.
 
     // Pagination + Limit control
     include ../../mixins/pagination
-
