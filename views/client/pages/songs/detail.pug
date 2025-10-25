@@ -22,7 +22,7 @@ block content
                             | #{song.singerId.fullName}
                         span.meta-item
                             i.fas.fa-music
-                            | #{song.topicId}
+                            | #{song.topicId.title}
                         span.meta-item.button-like(
                             class={active: user.listLikesSong.listId.includes(song._id)}
                         )

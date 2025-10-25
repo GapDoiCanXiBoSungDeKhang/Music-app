@@ -23,8 +23,6 @@ export class songService {
             })
                 .select('title')
                 .exec();
-
-            song.topicId = topic.title;
         }
         return songs;
     }

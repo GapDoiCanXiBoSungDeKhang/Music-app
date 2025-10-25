@@ -4,7 +4,7 @@ export interface ISong extends Document {
     title: string;
     description?: string;
     avatar?: string;
-    topicId?: string;
+    topicId?: Schema.Types.ObjectId;
     singerId?: Schema.Types.ObjectId;
     likes?: number;
     views?: number;
@@ -23,7 +23,10 @@ const SongSchema = new Schema<ISong>({
     },
     description: String,
     avatar: String,
-    topicId: String,
+    topicId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Topic',
+    },
     singerId: {
         type: Schema.Types.ObjectId,
         ref: 'Singer',

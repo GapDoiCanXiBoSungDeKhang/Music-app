@@ -1,4 +1,4 @@
-import {Schema} from 'mongoose';
+import mongoose, {Schema} from 'mongoose';
 
 import {SongModel} from '../../../common/model/song.model';
 import {TopicModel} from '../../../common/model/topic.model';
@@ -20,7 +20,7 @@ export class songService {
             if (!topic) return [];
 
             const songs = await SongModel.find({
-                topicId: topic._id,
+                topicId: new mongoose.Types.ObjectId(topic._id as string),
                 deleted: false,
                 status: 'active',
             })
@@ -38,6 +38,8 @@ export class songService {
         try {
             const song = await SongModel
                 .findOne({slug: slug})
+                .populate('singerId', 'fullName')
+                .populate('topicId', 'title')
                 .exec();
             if (!song) throw new Error('Song not found');
 
@@ -51,11 +53,11 @@ export class songService {
             }
 
             // get topic title
-            const topic = await TopicModel
-                .findOne({_id: song.topicId})
-                .select('title')
-                .exec();
-            song.topicId = topic?.title || '';
+            // const topic = await TopicModel
+            //     .findOne({_id: song.topicId})
+            //     .select('title')
+            //     .exec();
+            // song.topicId = topic?.title || '';
 
             return song;
         } catch (err: any) {
