@@ -11,4 +11,17 @@ export class controller {
             songs,
         });
     }
+
+    create(req: Request, res: Response) {
+        res.render('admin/pages/songs/create', {
+            titlePage: 'Thêm mới bài hát',
+        });
+    }
+
+    createPost(req: Request, res: Response) {
+        res.status(200).json({
+            data: req.body,
+            file: req.file,
+        });
+    }
 }

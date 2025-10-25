@@ -42,6 +42,7 @@ app.locals.prefixName = prefixNameConfig.PATH_ADMIN;
 app.use(flash());
 
 // 🟢 Parse application/x-www-form-urlencoded
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // 🟢 View engine

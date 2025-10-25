@@ -6,7 +6,6 @@ import songRoute from './song.route';
 import userRoute from './auth.route';
 import singerRoute from './singer.route';
 import profileRoute from './profile.route';
-import favouriteRoute from './favourite.route';
 
 // middleware
 import {isAuthenticated} from '../../../common/middleware/auth.middleware';
@@ -16,7 +15,7 @@ export default (app: Application) => {
     // app.use(prefixNameConfig.PATH_ADMIN + '/topic', topicRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/song', songRoute);
-    //
+
     // app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
     //
     // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);

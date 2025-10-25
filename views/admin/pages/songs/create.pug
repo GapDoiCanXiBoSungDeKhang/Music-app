@@ -1,0 +1,70 @@
+extends ../../layouts/default
+
+block content
+    link(rel='stylesheet', href='/admin/css/song-form.css')
+
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Thêm mới bài hát
+
+                form(method='POST', action=prefixName + '/song/create', enctype='multipart/form-data')
+                    .row.g-4
+                        // ===== Tên bài hát =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='title') Tên bài hát
+                            input.form-control.shadow-sm(type='text', id='name', name='title', placeholder='Nhập tên bài hát', required)
+
+                        // ===== Ca sĩ & Chủ đề =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='singerId') Ca sĩ
+                            select.form-select.shadow-sm(name='singerId', id='singer', required)
+                                option(value='') -- Chọn ca sĩ --
+                                if singers && singers.length
+                                    each s in singers
+                                        option(value=s._id)= s.name
+                                else
+                                    option(value='') Không có ca sĩ nào
+                        .col-md-6
+                            label.form-label.fw-semibold(for='topicId') Chủ đề
+                            select.form-select.shadow-sm(name='topicId', id='topic', required)
+                                option(value='') -- Chọn chủ đề --
+                                if topics && topics.length
+                                    each t in topics
+                                        option(value=t._id)= t.name
+                                else
+                                    option(value='') Không có chủ đề nào
+
+                        // ===== Hình ảnh & File nhạc =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='thumbnailInput') Ảnh bìa
+                            input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
+                            #previewContainer.mt-3.position-relative(style='display:none;')
+                                img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height: 200px; object-fit: cover;')
+                                button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
+                                    i.fas.fa-times
+                        .col-md-6
+                            label.form-label.fw-semibold(for='audio') File nhạc
+                            input.form-control.shadow-sm(type='file', id='audio', name='audio', accept='audio/*')
+
+                        // ===== Mô tả =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='description') Mô tả
+                            textarea.form-control.shadow-sm(id='description', name='description', rows='3', placeholder='Nhập mô tả ngắn...')
+
+                        // ===== Trạng thái =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='status') Trạng thái
+                            select.form-select.shadow-sm(name='status', id='status')
+                                option(value='active') Active
+                                option(value='inactive') Inactive
+
+                    hr.my-4
+
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/song')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        button.btn.btn-primary.shadow-sm(type='submit')
+                            i.fas.fa-plus.me-2
+                            | Thêm bài hát
