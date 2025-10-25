@@ -42,7 +42,8 @@ h2 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    gap: 1rem;
+    gap: 0.75rem; /* giảm khoảng cách tổng thể */
+    flex-wrap: wrap;
 }
 
 .search-box {
@@ -54,6 +55,7 @@ h2 {
     padding: 6px 14px;
     width: 40%;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    min-width: 250px;
 }
 
 .search-box i {
@@ -71,6 +73,13 @@ h2 {
     background: transparent;
 }
 
+/* Nhóm các select để sát nhau */
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* sát nhau hơn */
+}
+
 .filter-select {
     background: #fff;
     border: 1px solid #d1d5db;
@@ -79,6 +88,11 @@ h2 {
     font-size: 14px;
     color: #334155;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.filter-select:hover {
+    border-color: #94a3b8;
 }
 
 /* ========== Table ========== */
@@ -114,12 +128,18 @@ h2 {
 
 /* ========== Image ========== */
 .song-thumbnail {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
     background-color: #fff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.song-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ========== Status Badge ========== */
@@ -188,6 +208,46 @@ h2 {
 /* ========== Responsive ========== */
 @media (max-width: 768px) {
     .search-box { width: 100%; }
-    .filter-select { width: 100%; }
-    .search-container { flex-direction: column; align-items: stretch; }
+    .filter-group { width: 100%; justify-content: space-between; }
+    .filter-select { flex: 1; }
+    .search-container { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+}
+
+/* ========== Checkbox ========== */
+.table .form-check-input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ========== Fix Checkbox Alignment & Table Balance ========== */
+
+/* Cột checkbox căn giữa */
+.table th:first-child,
+.table td:first-child {
+    width: 45px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Cột STT nhỏ gọn hơn */
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 60px;
+    text-align: center;
+}
+
+/* Cột hành động không bị hẹp */
+.table th:last-child,
+.table td:last-child {
+    width: 120px;
+    text-align: center;
+}
+
+/* Điều chỉnh lại chiều cao hàng để cân bằng */
+.table td {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
 }
