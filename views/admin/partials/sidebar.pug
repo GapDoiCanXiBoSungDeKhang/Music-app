@@ -1,9 +1,9 @@
 //- Sidebar
 aside#sidebar.hidden
     ul.list-group.list-group-flush
-        each url in ['song', 'topic', 'favourite']
+        each url in ['dashboard', 'song', 'topic', 'user', 'manager', 'singer', 'role', 'permission', 'general-setting']
             li.list-group-item
-                a(href='/' + url)= url
+                a(href=prefixName + '/' + url)= url
 
 //- Backdrop
 div#sidebar-backdrop
