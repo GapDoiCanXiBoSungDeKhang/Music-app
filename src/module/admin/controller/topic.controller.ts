@@ -1,18 +1,15 @@
 import {Request, Response} from 'express';
 
 // service
-import {TopicService} from '../service/topic.service';
-
-const serviceInstance = new TopicService();
+import {topicService} from '../service/topic.service';
+const serviceInstance = new topicService();
 
 export class controller {
     async index(req: Request, res: Response) {
-        res.render('client/pages/topics/topics', {
-            titlePage: 'Trang chủ đề',
-            topics: await serviceInstance.getTopics({
-                deleted: false,
-                status: 'active',
-            })
+        const topics = await serviceInstance.index();
+        res.render('admin/pages/topics/list', {
+            titlePage: 'Quản lý chủ đề',
+            topics,
         });
     }
 }
