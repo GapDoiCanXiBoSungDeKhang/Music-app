@@ -57,12 +57,14 @@ block content
                                             span.badge.bg-success.status-toggle(
                                                 data-id=singer._id,
                                                 data-status='active',
+                                                data-entity='singer',
                                                 style='cursor:pointer;'
                                             ) hoạt động
                                         else
                                             span.badge.bg-secondary.status-toggle(
                                                 data-id=singer._id,
                                                 data-status='inactive',
+                                                data-entity='singer',
                                                 style='cursor:pointer;'
                                             ) ngưng hoạt động
                                     td.text-center #{singer.createdAt ? singer.createdAt.toLocaleDateString('vi-VN') : '-'}
@@ -71,7 +73,7 @@ block content
                                             i.fas.fa-pen
                                         form#singleDeleteForm(action='', method='POST', style='display:none;')
                                             input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=singer._id)
+                                        a.btn-icon.delete(data-id=singer._id, data-entity='singer')
                                             i.fas.fa-trash
                         else
                             tr

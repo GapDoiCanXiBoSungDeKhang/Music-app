@@ -63,12 +63,14 @@ block content
                                             span.badge.bg-success.status-toggle(
                                                 data-id=song._id,
                                                 data-status='active',
+                                                data-entity='song',
                                                 style='cursor:pointer;'
                                             ) hoạt động
                                         else
                                             span.badge.bg-secondary.status-toggle(
                                                 data-id=song._id,
                                                 data-status='inactive',
+                                                data-entity='song',
                                                 style='cursor:pointer;'
                                             ) ngưng hoạt động
                                     td.text-center
@@ -76,7 +78,7 @@ block content
                                             i.fas.fa-pen
                                         form#singleDeleteForm(action='', method='POST', style='display:none;')
                                             input(type='hidden', name='_method', value='DELETE')
-                                        a.btn-icon.delete(data-id=song._id)
+                                        a.btn-icon.delete(data-id=song._id, data-entity='song')
                                             i.fas.fa-trash
                         else
                             tr

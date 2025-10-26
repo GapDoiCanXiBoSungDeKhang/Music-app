@@ -6,18 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', e => {
             e.preventDefault();
 
-            const songRow = btn.closest('tr');
-            const title = songRow.querySelector('td:nth-child(4)')?.innerText.trim() || 'bài hát này';
-            const songId = btn.dataset.id; // ✅ lấy từ data-id thay vì href
+            const row = btn.closest('tr');
+            const entity = btn.dataset.entity || 'item';
+            const id = btn.dataset.id;
 
-            if (!songId) {
-                console.error('Không tìm thấy songId!');
+            // Lấy tiêu đề từ cột 4 (hoặc fallback)
+            const titleCell = row.querySelector('td:nth-child(4)');
+            const title = titleCell ? titleCell.innerText.trim() : entity;
+
+            if (!id) {
+                console.error('Không tìm thấy ID!');
                 return;
             }
 
             const confirmDelete = confirm(`Bạn có chắc chắn muốn xóa ${title}?`);
             if (confirmDelete) {
-                deleteForm.action = `/server/song/${songId}?_method=DELETE`;
+                // ✅ Tự động chọn route phù hợp
+                deleteForm.action = `/server/delete/${entity}/${id}?_method=DELETE`;
                 deleteForm.submit();
             }
         });
