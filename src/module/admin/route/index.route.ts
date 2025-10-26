@@ -4,6 +4,7 @@ import {Application} from "express";
 import topicRoute from './topic.route';
 import songRoute from './song.route';
 import userRoute from './user.route';
+import roleRoute from './role.route';
 import singerRoute from './singer.route';
 import profileRoute from './profile.route';
 
@@ -17,6 +18,8 @@ export default (app: Application) => {
     app.use(prefixNameConfig.PATH_ADMIN + '/song', songRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/user', userRoute);
+
+    app.use(prefixNameConfig.PATH_ADMIN + '/permission', roleRoute);
 
     // app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
 

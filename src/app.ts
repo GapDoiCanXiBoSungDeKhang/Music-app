@@ -5,6 +5,7 @@ import passport from 'passport';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import flash from 'express-flash';
+import methodOverride from 'method-override';
 
 // 🟢 Load environment variables
 dotenv.config();
@@ -40,6 +41,9 @@ app.locals.prefixName = prefixNameConfig.PATH_ADMIN;
 
 // 🟢 Flash
 app.use(flash());
+
+// 🟢 override with the X-HTTP-Method-Override header in the request
+app.use(methodOverride('_method'))
 
 // 🟢 Parse application/x-www-form-urlencoded
 app.use(bodyParser.json());

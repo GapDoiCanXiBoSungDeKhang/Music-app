@@ -1,0 +1,94 @@
+/* ===== BẢNG PHÂN QUYỀN ===== */
+
+.permission-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e9ecef;
+    background-color: #fff;
+    font-size: 15px;
+}
+
+.permission-table th,
+.permission-table td {
+    border: 1px solid #dee2e6;
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+
+.permission-table thead th {
+    background-color: #f8f9fa;
+    color: #343a40;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
+}
+
+.permission-table thead th:first-child {
+    text-align: left;
+    width: 300px;
+}
+
+.permission-table tbody tr.bg-light.fw-semibold td {
+    background-color: #f1f3f5 !important;
+    font-weight: 600;
+    color: #212529;
+    border-top: 2px solid #dee2e6;
+}
+
+.permission-table td.ps-4 {
+    padding-left: 30px !important;
+    text-align: left;
+    font-weight: 500;
+    color: #495057;
+}
+
+.permission-table .form-check-input {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+}
+
+.permission-table .text-center {
+    text-align: center !important;
+}
+
+/* Hover effect */
+.permission-table tbody tr:hover td {
+    background-color: #f8f9fa;
+}
+
+/* Cột role header */
+.permission-table thead th:not(:first-child) {
+    width: 160px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Nút lưu */
+#btnSave {
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+#btnSave:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-1px);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+    .permission-table thead th:not(:first-child) {
+        width: auto;
+        font-size: 13px;
+    }
+    .permission-table td,
+    .permission-table th {
+        padding: 8px;
+        font-size: 13px;
+    }
+}

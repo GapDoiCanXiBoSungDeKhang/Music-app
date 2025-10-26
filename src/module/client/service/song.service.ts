@@ -52,13 +52,6 @@ export class songService {
                 )
             }
 
-            // get topic title
-            // const topic = await TopicModel
-            //     .findOne({_id: song.topicId})
-            //     .select('title')
-            //     .exec();
-            // song.topicId = topic?.title || '';
-
             return song;
         } catch (err: any) {
             throw new Error(err.message);

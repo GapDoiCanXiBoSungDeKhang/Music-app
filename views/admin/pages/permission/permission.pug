@@ -1,0 +1,43 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h2.fw-semibold.text-dark.mb-0 Quản lý phân quyền
+            button.btn.btn-primary#btnSave(type='button')
+                i.fas.fa-save.me-2
+                | Cập nhật
+
+        .card.shadow-sm.rounded-4.border-0
+            .card-body.p-4
+                form#permissionForm(action=prefixName + '/permission/update?_method=PATCH', method='POST')
+                    table.table.permission-table.align-middle
+                        thead
+                            tr
+                                th Tính năng
+                                each role in roles
+                                    th.text-center= role.title
+                        tbody
+                            each module in moduleList
+                                tr.bg-light.fw-semibold
+                                    td(colspan=roles.length + 1)= module.group
+                                each action in module.actions
+                                    tr
+                                        td.ps-4
+                                            if action === 'view'
+                                                | Xem
+                                            else if action === 'create'
+                                                | Thêm mới
+                                            else if action === 'edit'
+                                                | Chỉnh sửa
+                                            else if action === 'delete'
+                                                | Xóa
+                                        each role in roles
+                                            - const permKey = `${module.key}_${action}`;
+                                            td.text-center
+                                                input.form-check-input.permission-checkbox(
+                                                    type='checkbox',
+                                                    name=`perm_${role._id}_${permKey}`,
+                                                    checked=role.permissions.includes(permKey)
+                                                )
+                    input(type='hidden', name='permissions', id='permissionsData')

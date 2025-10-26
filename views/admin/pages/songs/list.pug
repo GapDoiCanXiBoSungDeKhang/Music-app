@@ -53,9 +53,9 @@ block content
                                     td.text-center
                                         img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
                                     td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=`/server/songs/detail/${song._id}`)= song.title
+                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/songs/detail/${song._id}`)= song.title
                                     td= song.singerId.fullName || '-'
-                                    td= song.topicId || '-'
+                                    td= song.topicId.title || '-'
                                     td.text-center #{song.views ? song.views.toLocaleString() : 0}
                                     td.text-center #{song.likes ? song.likes.toLocaleString() : 0}
                                     td.text-center
@@ -72,7 +72,7 @@ block content
                                                 style='cursor:pointer;'
                                             ) ngưng hoạt động
                                     td.text-center
-                                        a.btn-icon.edit(href=`/server/songs/edit/${song._id}`)
+                                        a.btn-icon.edit(href=prefixName + `/songs/edit/${song._id}`)
                                             i.fas.fa-pen
                                         form#singleDeleteForm(action='', method='POST', style='display:none;')
                                             input(type='hidden', name='_method', value='DELETE')
