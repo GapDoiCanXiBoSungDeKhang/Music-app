@@ -1,0 +1,81 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h2.fw-semibold.text-dark.mb-0 Quản lý ca sĩ
+            a.btn-add(href= prefixName + '/singer/create')
+                i.fas.fa-plus
+                |  Thêm ca sĩ
+
+        .card.shadow-sm.rounded-4.border-0
+            .card-body.p-4
+                .search-container
+                    form.search-box(action= prefixName + '/singer', method='GET')
+                        i.fas.fa-search
+                        input(type='text', name='q', placeholder='Tìm kiếm ca sĩ...')
+                    .filter-group
+                        form#filterForm(action='/server/singer', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                option(value='all' selected=(status === 'all')) Tất cả
+                                option(value='active' selected=(status === 'active')) Active
+                                option(value='inactive' selected=(status === 'inactive')) Inactive
+                        form#multiActionForm(action='/server/singer/change-multi?_method=PATCH', method='POST', style='display:none;')
+                            input(type='hidden', name='ids', id='selectedIds')
+                            input(type='hidden', name='action', id='selectedAction')
+                        select.filter-select.filter-action
+                            option(value='all' selected disabled) Hành động
+                            option(value='delete') Xóa
+                            option(value='active') Hoạt động
+                            option(value='inactive') Ngưng hoạt động
+
+                table.table.align-middle.mt-4
+                    thead
+                        tr
+                            th.text-center
+                                input#selectAll.form-check-input(type='checkbox')
+                            th STT
+                            th.text-center hình ảnh
+                            th Họ và tên
+                            th Slug
+                            th.text-center trạng thái
+                            th.text-center ngày tạo
+                            th.text-center hành động
+                    tbody
+                        if singers && singers.length
+                            each singer, index in singers
+                                tr
+                                    td.text-center
+                                        input.form-check-input.song-checkbox(type='checkbox', value=singer._id)
+                                    td #{index + 1}
+                                    td.text-center
+                                        img.song-thumbnail(src=singer.avatar || '/images/no-image.png', alt=singer.fullName)
+                                    td= singer.fullName
+                                    td= singer.slug
+                                    td.text-center
+                                        if singer.status === 'active'
+                                            span.badge.bg-success.status-toggle(
+                                                data-id=singer._id,
+                                                data-status='active',
+                                                style='cursor:pointer;'
+                                            ) hoạt động
+                                        else
+                                            span.badge.bg-secondary.status-toggle(
+                                                data-id=singer._id,
+                                                data-status='inactive',
+                                                style='cursor:pointer;'
+                                            ) ngưng hoạt động
+                                    td.text-center #{singer.createdAt ? singer.createdAt.toLocaleDateString('vi-VN') : '-'}
+                                    td.text-center
+                                        a.btn-icon.edit(href=prefixName + `/singer/edit/${singer._id}`)
+                                            i.fas.fa-pen
+                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                            input(type='hidden', name='_method', value='DELETE')
+                                        a.btn-icon.delete(data-id=singer._id)
+                                            i.fas.fa-trash
+                        else
+                            tr
+                                td(colspan='8' class='text-center py-4 text-muted') Không có ca sĩ nào.
+
+    // Pagination + Limit control
+    include ../../mixins/pagination

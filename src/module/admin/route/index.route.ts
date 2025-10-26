@@ -21,7 +21,7 @@ export default (app: Application) => {
 
     app.use(prefixNameConfig.PATH_ADMIN + '/permission', roleRoute);
 
-    // app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
+    app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
 
     // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);
 

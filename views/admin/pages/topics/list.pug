@@ -35,21 +35,21 @@ block content
                             th.text-center
                                 input#selectAll.form-check-input(type='checkbox')
                             th STT
-                            th.text-center Hình ảnh
-                            th Tiêu đề
-                            th Mô tả
-                            th.text-center Slug
-                            th.text-center Trạng thái
-                            th.text-center Hành động
+                            th.text-center hình ảnh
+                            th tiêu đề
+                            th mô tả
+                            th.text-center slug
+                            th.text-center trạng thái
+                            th.text-center hành động
                     tbody
                         if topics && topics.length
                             each topic, index in topics
                                 tr
                                     td.text-center
-                                        input.form-check-input.topic-checkbox(type='checkbox', value=topic._id)
+                                        input.form-check-input.song-checkbox(type='checkbox', value=topic._id)
                                     td #{index + 1}
                                     td.text-center
-                                        img.topic-thumbnail(src=topic.avatar || '/images/no-image.png', alt=topic.title)
+                                        img.song-thumbnail(src=topic.avatar || '/images/no-image.png', alt=topic.title)
                                     td
                                         a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/topic/edit/${topic._id}`)= topic.title
                                     td.text-muted #{topic.description || '-'}
