@@ -13,9 +13,10 @@ dotenv.config();
 import routeClient from './module/client/route/index.route';
 import routeServer from './module/admin/route/index.route';
 
-import {connect} from './common/config/database.config';
-import './common/config/passport.config';
-import prefixNameConfig from './common/config/prefixName.config';
+// config
+import {connect} from './common/config/database.config'; // connect database
+import './common/config/passport.config'; // connect passport
+import prefixNameConfig from './common/config/prefixName.config'; // connect prefixName
 
 // 🟢 Database
 connect(process.env.DATABASE_URL);

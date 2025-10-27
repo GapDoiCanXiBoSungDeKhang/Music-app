@@ -1,53 +1,35 @@
 import passport from 'passport';
-import {Strategy as localStrategy} from 'passport-local';
-import bcrypt from 'bcrypt';
 
 import {UserModel} from '../model/user.model';
-import '../model/songLike.model';
-import '../model/songFavourite.model';
-import '../model/songView.model';
-
-passport.use(
-    new localStrategy(
-        {usernameField: 'email'},
-        async (email: string, password: string, done) => {
-            try {
-                const user = await UserModel.findOne({
-                    email,
-                    deleted: false
-                })
-                    .exec();
-                if (!user) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
-                if (user.status === 'inactive') return done(null, false, {message: 'Tài khoản đã bị khóa!'});
-                const isMatch = await bcrypt.compare(password, user.password);
-                if (!isMatch) return done(null, false, {message: 'Tài khoản hoặc mật khẩu không đúng!'});
-                delete user.password;
-                done(null, user);
-            } catch (err) {
-                done(err);
-            }
-        }
-    )
-)
+import {ManagerModel} from '../model/manager.model';
 
 // Serialize user (lưu id vào session)
 passport.serializeUser((user: any, done) => {
-    done(null, user._id);
+    const role = user.roleId ? 'server' : 'client';
+    done(null, { _id: user._id, role });
 });
 
 // Deserialize user (lấy thông tin user từ id)
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (data, done) => {
     try {
-        const user = await UserModel.findById(id)
-            .populate('listLikesSong', 'listId')
-            .populate('listFavoritesSong', 'listId')
-            .populate('listViewsSong', 'listId')
-            .select('-password')
-            .exec();
-        done(null, user);
+        if (data['role'] === 'server') {
+            const manager = await ManagerModel.findById(data['_id'])
+                .populate('createdBy.managerId', 'fullName')
+                .populate({path: 'updatedBlogId', populate: {path: 'list_blog.managerId', select: 'fullName'}})
+                .populate('roleId')
+                .select('-password')
+                .exec();
+            done(null, manager);
+        } else {
+            const user = await UserModel.findById(data['_id'])
+                .populate('listLikesSong', 'listId')
+                .populate('listFavoritesSong', 'listId')
+                .populate('listViewsSong', 'listId')
+                .select('-password')
+                .exec();
+            done(null, user);
+        }
     } catch (err) {
         done(err);
     }
 });
-
-export default passport;

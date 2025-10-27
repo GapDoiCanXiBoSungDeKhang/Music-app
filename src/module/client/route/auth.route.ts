@@ -19,7 +19,7 @@ router.get('/login', controllerInstance.login);
 
 router.post(
     '/login',
-    passport.authenticate('local', {
+    passport.authenticate('local-client', {
         successRedirect: '/topic',
         failureRedirect: '/auth/login',
         failureFlash: true,
