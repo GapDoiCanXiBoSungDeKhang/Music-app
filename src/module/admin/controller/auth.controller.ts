@@ -27,7 +27,7 @@ export class controller {
     }
 
     login(req: Request, res: Response) {
-        res.render('client/pages/auth/login', {
+        res.render('admin/pages/auth/login', {
             titlePage: 'Trang đăng nhập',
         });
     }

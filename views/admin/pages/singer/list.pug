@@ -37,7 +37,6 @@ block content
                             th STT
                             th.text-center hình ảnh
                             th Họ và tên
-                            th Slug
                             th.text-center trạng thái
                             th.text-center ngày tạo
                             th.text-center hành động
@@ -51,7 +50,6 @@ block content
                                     td.text-center
                                         img.song-thumbnail(src=singer.avatar || '/images/no-image.png', alt=singer.fullName)
                                     td= singer.fullName
-                                    td= singer.slug
                                     td.text-center
                                         if singer.status === 'active'
                                             span.badge.bg-success.status-toggle(

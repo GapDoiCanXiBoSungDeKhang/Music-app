@@ -6,6 +6,7 @@ import songRoute from './song.route';
 import userRoute from './user.route';
 import roleRoute from './role.route';
 import singerRoute from './singer.route';
+import authRoute from './auth.route';
 import profileRoute from './profile.route';
 
 // middleware
@@ -25,5 +26,5 @@ export default (app: Application) => {
 
     // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);
 
-    // app.use('/auth', userRoute);
+    app.use(prefixNameConfig.PATH_ADMIN + '/auth', authRoute);
 }

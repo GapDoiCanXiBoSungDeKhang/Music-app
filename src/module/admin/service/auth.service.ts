@@ -1,10 +1,16 @@
 import bcrypt from 'bcrypt';
 
-import {UserModel} from '../../../common/model/user.model';
-import {SongLikeModel} from '../../../common/model/songLike.model';
-import {SongViewModel} from '../../../common/model/songView.model';
-import {SongFavouriteModel} from '../../../common/model/songFavourite.model';
-
 export class authService {
+    async register(fullName: string, email: string, password: string): Promise<void> {
+        const existingUser = await UserModel.findOne({ email, deleted: false });
+        if (existingUser) return null;
 
+        const manager: {fullName: string, email: string, password: string} = {
+            fullName: fullName,
+            email: email,
+            password: await bcrypt.hash(password, 10),
+        }
+
+        const newManager = await
+    }
 }

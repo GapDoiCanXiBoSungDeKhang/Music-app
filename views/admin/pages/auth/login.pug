@@ -1,0 +1,33 @@
+extends ../../layouts/auth
+
+block auth
+    section.container.mt-5
+        .row.justify-content-center
+            .col-md-5
+                .card.shadow-lg.border-0.rounded-lg
+                    .card-header.text-center.bg-primary.text-white.py-3
+                        h3.mb-0.font-weight-bold Đăng nhập hệ thống
+                    .card-body.p-4
+                        if message
+                            .alert.alert-danger.text-center= message
+
+                        form(action=prefixName + '/auth/login' method='POST')
+                            .form-group
+                                label(for='email') Tên đăng nhập hoặc Email
+                                input#email.form-control(type='text', name='email', placeholder='Nhập email hoặc tên đăng nhập', required)
+
+                            .form-group.mt-3
+                                label(for='password') Mật khẩu
+                                input#password.form-control(type='password', name='password', placeholder='Nhập mật khẩu', required)
+
+                            .form-group.form-check.mt-3
+                                input#remember.form-check-input(type='checkbox', name='remember')
+                                label.form-check-label(for='remember') Ghi nhớ đăng nhập
+
+                            button.btn.btn-primary.btn-block.mt-4(type='submit')
+                                i.fas.fa-sign-in-alt.mr-2
+                                | Đăng nhập
+
+                    .card-footer.text-center.bg-light
+                        small.text-muted
+                            | © 2025 Hệ thống quản lý - Bảo mật và riêng tư
