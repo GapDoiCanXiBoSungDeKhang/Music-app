@@ -15,7 +15,11 @@ import routeServer from './module/admin/route/index.route';
 
 // config
 import {connect} from './common/config/database.config'; // connect database
+
+import './common/config/passport.server.config';
+import './common/config/passport.client.config';
 import './common/config/passport.config'; // connect passport
+
 import prefixNameConfig from './common/config/prefixName.config'; // connect prefixName
 
 // 🟢 Database
