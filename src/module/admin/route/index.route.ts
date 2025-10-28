@@ -8,6 +8,7 @@ import permissionRoute from './permission.route';
 import roleRoute from './role.route';
 import singerRoute from './singer.route';
 import authRoute from './auth.route';
+import managerRoute from './manager.route';
 import profileRoute from './profile.route';
 
 // middleware
@@ -28,6 +29,8 @@ export default (app: Application) => {
     app.use(prefixNameConfig.PATH_ADMIN + '/singer', singerRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/role', roleRoute);
+
+    app.use(prefixNameConfig.PATH_ADMIN + '/manager', managerRoute);
 
     // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);
 

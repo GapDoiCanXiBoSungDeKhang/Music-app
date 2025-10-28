@@ -1,0 +1,90 @@
+extends ../../layouts/default
+
+include ../../mixins/pagination
+
+block content
+    .container-fluid.p-4
+        .d-flex.justify-content-between.align-items-center.mb-4
+            h2.fw-semibold.text-dark.mb-0 Quản lý quản trị viên
+            a.btn-add(href= prefixName + '/manager/create')
+                i.fas.fa-plus
+                |  Thêm quản trị viên
+
+        .card.shadow-sm.rounded-4.border-0
+            .card-body.p-4
+                .search-container
+                    form.search-box(action= prefixName + '/manager', method='GET')
+                        i.fas.fa-search
+                        input(type='text', name='q', placeholder='Tìm kiếm quản trị viên...')
+                    .filter-group
+                        form#filterForm(action='/server/manager', method='GET', class='filter-form')
+                            select#statusSelect.filter-select.filter-status(name='status', onchange='this.form.submit()')
+                                option(value='all' selected=(status === 'all')) Tất cả
+                                option(value='active' selected=(status === 'active')) Hoạt động
+                                option(value='inactive' selected=(status === 'inactive')) Ngưng hoạt động
+                        form#multiActionForm(action='/server/manager/change-multi?_method=PATCH', method='POST', style='display:none;')
+                            input(type='hidden', name='ids', id='selectedIds')
+                            input(type='hidden', name='action', id='selectedAction')
+                        select.filter-select.filter-action
+                            option(value='all' selected disabled) Hành động
+                            option(value='delete') Xóa
+                            option(value='active') Hoạt động
+                            option(value='inactive') Ngưng hoạt động
+
+                table.table.align-middle.mt-4
+                    thead
+                        tr
+                            th.text-center
+                                input#selectAll.form-check-input(type='checkbox')
+                            th STT
+                            th.text-center Ảnh đại diện
+                            th Họ và tên
+                            th Email
+                            th.text-center Vai trò
+                            th.text-center Trạng thái
+                            th.text-center Hành động
+                    tbody
+                        if managers && managers.length
+                            each manager, index in managers
+                                tr
+                                    td.text-center
+                                        input.form-check-input.song-checkbox(type='checkbox', value=manager._id)
+                                    td #{index + 1}
+                                    td.text-center
+                                        img.song-thumbnail(src=manager.avatar || '/images/no-image.png', alt=manager.fullName)
+                                    td
+                                        a.text-decoration-none.text-primary.fw-semibold(href=`/server/manager/detail/${manager._id}`)= manager.fullName
+                                    td= manager.email
+                                    td.text-center
+                                        if manager.roleId && manager.roleId.title
+                                            span.badge.bg-info= manager.roleId.title
+                                        else
+                                            span.text-muted (Chưa có vai trò)
+                                    td.text-center
+                                        if manager.status === 'active'
+                                            span.badge.bg-success.status-toggle(
+                                                data-id=manager._id,
+                                                data-status='active',
+                                                data-entity='manager',
+                                                style='cursor:pointer;'
+                                            ) hoạt động
+                                        else
+                                            span.badge.bg-secondary.status-toggle(
+                                                data-id=manager._id,
+                                                data-status='inactive',
+                                                data-entity='manager',
+                                                style='cursor:pointer;'
+                                            ) ngưng hoạt động
+                                    td.text-center
+                                        a.btn-icon.edit(href=`/server/manager/edit/${manager._id}`)
+                                            i.fas.fa-pen
+                                        form#singleDeleteForm(action='', method='POST', style='display:none;')
+                                            input(type='hidden', name='_method', value='DELETE')
+                                        a.btn-icon.delete(data-id=manager._id, data-entity='manager')
+                                            i.fas.fa-trash
+                        else
+                            tr
+                                td(colspan='8' class='text-center py-4 text-muted') Không có quản trị viên nào.
+
+    // Pagination + Limit control
+    +pagination('manager')
