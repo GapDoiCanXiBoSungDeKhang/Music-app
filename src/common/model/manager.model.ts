@@ -6,6 +6,7 @@ export interface IManager extends Document {
     phone: string;
     email: string;
     avatar?: string;
+    description?: string,
     roleId: Schema.Types.ObjectId;
     status?: 'active' | 'inactive';
     createdBy: {managerId: Schema.Types.ObjectId, at: Date};
@@ -23,6 +24,7 @@ const ManagerSchema = new Schema<IManager>(
         phone: { type: String },
         email: { type: String, required: true },
         avatar: { type: String },
+        description: { type: String },
         roleId: { type: Schema.Types.ObjectId, ref: 'Role'},
         createdBy: {
             managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
