@@ -44,6 +44,9 @@ app.use(passport.session());
 // 🟢 Set prefixName locals views
 app.locals.prefixName = prefixNameConfig.PATH_ADMIN;
 
+// Set API_KEY_TINYMCE
+app.locals.apiKeyTinymce = process.env.API_KEY_TINYMCE;
+
 // 🟢 Flash
 app.use(flash());
 
@@ -60,6 +63,9 @@ app.set('views', path.join(__dirname, '../views'));
 
 // 🟢 Static files
 app.use(express.static(path.join(__dirname, '../public')));
+
+// 🟢 Tinymce
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 // 🟢 Routes
 routeClient(app);
