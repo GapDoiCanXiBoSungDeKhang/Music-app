@@ -15,7 +15,7 @@ export class controller {
     }
 
     create(req: Request, res: Response) {
-        res.render('admin/pages/manager/create', {
+        res.render('admin/pages/manager/create.pug', {
             titlePage: 'Trang tạo tài khoản quản lý'
         });
     }

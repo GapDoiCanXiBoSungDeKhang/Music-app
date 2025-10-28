@@ -13,7 +13,7 @@ export class controller {
     }
 
     create(req: Request, res: Response) {
-        res.render('admin/pages/songs/create', {
+        res.render('admin/pages/songs/create.pug', {
             titlePage: 'Thêm mới bài hát',
         });
     }

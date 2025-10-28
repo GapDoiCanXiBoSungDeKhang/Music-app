@@ -10,4 +10,10 @@ export class controller {
             roles
         })
     }
+
+    create(req: Request, res: Response) {
+        res.render('admin/pages/role/create', {
+            titlePage: 'Trang tạo mới chức vự',
+        });
+    }
 }
