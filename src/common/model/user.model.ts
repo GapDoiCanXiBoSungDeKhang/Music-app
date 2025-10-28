@@ -8,6 +8,9 @@ export interface IUser extends Document {
     listLikesSong: Schema.Types.ObjectId;
     listFavoritesSong: Schema.Types.ObjectId;
     listViewsSong: Schema.Types.ObjectId;
+    createdBy: {managerId: Schema.Types.ObjectId, at: Date};
+    updatedBlogId?: Schema.Types.ObjectId;
+    deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
     status?: 'active' | 'inactive';
     deleted?: boolean;
     createdAt?: Date;
@@ -23,6 +26,15 @@ const UserSchema = new Schema<IUser>(
         listLikesSong: { type: Schema.Types.ObjectId, ref: 'SongLike' },
         listFavoritesSong: { type: Schema.Types.ObjectId, ref: 'SongFavourite' },
         listViewsSong: { type: Schema.Types.ObjectId, ref: 'SongView' },
+        createdBy: {
+            managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
+            at: { type: Date, default: Date.now },
+        },
+        updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
+        deletedBy: {
+            managerId: {type: Schema.Types.ObjectId, ref: 'Manager'},
+            at: { type: Date, default: Date.now },
+        },
         status: { type: String, enum: ['active', 'inactive'], default: 'active' },
         deleted: { type: Boolean, default: false },
     },

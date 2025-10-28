@@ -8,11 +8,9 @@ export interface IManager extends Document {
     avatar?: string;
     roleId: Schema.Types.ObjectId;
     status?: 'active' | 'inactive';
-    createdBy?: {
-        managerId: Schema.Types.ObjectId;
-        at: Date;
-    };
+    createdBy: {managerId: Schema.Types.ObjectId, at: Date};
     updatedBlogId?: Schema.Types.ObjectId;
+    deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
     deleted?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
@@ -31,6 +29,10 @@ const ManagerSchema = new Schema<IManager>(
             at: { type: Date, default: Date.now },
         },
         updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
+        deletedBy: {
+            managerId: {type: Schema.Types.ObjectId, ref: 'Manager'},
+            at: { type: Date, default: Date.now },
+        },
         status: { type: String, enum: ['active', 'inactive'], default: 'active' },
         deleted: { type: Boolean, default: false },
     },

@@ -6,6 +6,9 @@ export interface ISinger extends Document {
     slug: string;
     status?: 'active' | 'inactive';
     deleted?: boolean;
+    createdBy: {managerId: Schema.Types.ObjectId, at: Date};
+    updatedBlogId?: Schema.Types.ObjectId;
+    deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
     deletedAt?: Date;
 }
 
@@ -30,6 +33,15 @@ const SingerSchema = new Schema<ISinger>({
     deleted: {
         type: Boolean,
         default: false,
+    },
+    createdBy: {
+        managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
+        at: { type: Date, default: Date.now },
+    },
+    updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
+    deletedBy: {
+        managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
+        at: { type: Date, default: Date.now },
     },
     deletedAt: Date,
 }, {
