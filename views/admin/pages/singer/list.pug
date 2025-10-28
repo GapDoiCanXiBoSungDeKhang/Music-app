@@ -1,5 +1,7 @@
 extends ../../layouts/default
 
+include ../../mixins/pagination
+
 block content
     .container-fluid.p-4
         .d-flex.justify-content-between.align-items-center.mb-4
@@ -78,4 +80,4 @@ block content
                                 td(colspan='8' class='text-center py-4 text-muted') Không có ca sĩ nào.
 
     // Pagination + Limit control
-    include ../../mixins/pagination
+    +pagination('singer')
