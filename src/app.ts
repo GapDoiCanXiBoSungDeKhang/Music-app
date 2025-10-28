@@ -13,7 +13,7 @@ dotenv.config();
 import routeClient from './module/client/route/index.route';
 import routeServer from './module/admin/route/index.route';
 
-// config
+// 🟢 config
 import {connect} from './common/config/database.config'; // connect database
 
 import './common/config/passport.server.config';
