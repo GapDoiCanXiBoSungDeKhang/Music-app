@@ -44,8 +44,12 @@ block content
                                 button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
                                     i.fas.fa-times
                         .col-md-6
-                            label.form-label.fw-semibold(for='audio') File nhạc
-                            input.form-control.shadow-sm(type='file', id='audio', name='audio', accept='audio/*')
+                            label.form-label.fw-semibold(for='audioInput') File nhạc
+                            input.form-control.shadow-sm(type='file', id='audioInput', name='audio', accept='audio/*')
+                            #audioPreviewContainer.mt-3.position-relative(style='display:none;')
+                                audio#audioPreview.w-100(controls style='max-height: 60px;')
+                                button#audioRemoveBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
+                                    i.fas.fa-times
 
                         // ===== Mô tả =====
                         .col-md-12
