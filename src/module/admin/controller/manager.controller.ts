@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 
-import {ManagerModel} from '../../../common/model/manager.model';
+import {RoleModel} from '../../../common/model/role.model';
 
 import {songService} from '../service/manager.service';
 const serviceInstance = new songService();
@@ -14,9 +14,12 @@ export class controller {
         });
     }
 
-    create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
         res.render('admin/pages/manager/create.pug', {
-            titlePage: 'Trang tạo tài khoản quản lý'
+            titlePage: 'Trang tạo tài khoản quản lý',
+            roles: await RoleModel.find({deleted: false, status: 'active'})
+                .select('title')
+                .exec()
         });
     }
 

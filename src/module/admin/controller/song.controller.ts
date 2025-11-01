@@ -39,7 +39,9 @@ export class controller {
     async edit(req: Request, res: Response) {
         res.render('admin/pages/songs/edit.pug', {
             titlePage: 'Trang chỉnh sửa',
-            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false})
+            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false}).exec(),
+            singers: await SingerModel.find({deleted: false, status: 'active'}).select('fullName').exec(),
+            topics: await TopicModel.find({deleted: false, status: 'active'}).select('title').exec(),
         });
     }
 
