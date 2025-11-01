@@ -1,7 +1,5 @@
 import {UserModel} from '../../../common/model/user.model';
 
-import '../../../common/model/singer.model';
-
 import {IUser} from '../../../common/model/user.model';
 
 export class userService {
