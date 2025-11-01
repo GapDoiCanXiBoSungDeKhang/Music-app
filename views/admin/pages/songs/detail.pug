@@ -1,0 +1,99 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Chi tiết bài hát
+
+                if song
+                    .row.g-4
+                        // ===== Ảnh bìa =====
+                        .col-md-4
+                            if song.avatar
+                                img.img-thumbnail.rounded-3.w-100(src=song.avatar, style='max-height: 250px; object-fit: cover;')
+                            else
+                                .border.rounded-3.d-flex.align-items-center.justify-content-center(style='height: 250px; background: #f8f9fa;')
+                                    span.text-muted Không có ảnh bìa
+
+                        // ===== Thông tin cơ bản =====
+                        .col-md-8
+                            h5.fw-bold.mb-3.text-primary= song.title
+
+                            p.mb-2
+                                strong.text-secondary Ca sĩ:
+                                |
+                                if song.singerId && song.singerId.fullName
+                                    = song.singerId.fullName
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Chủ đề:
+                                |
+                                if song.topicId && song.topicId.title
+                                    = song.topicId.title
+                                else
+                                    span.text-muted Không xác định
+
+                            p.mb-2
+                                strong.text-secondary Trạng thái:
+                                |
+                                if song.status === 'active'
+                                    span.badge.bg-success.ms-1 Active
+                                else
+                                    span.badge.bg-secondary.ms-1 Inactive
+
+                        p.mb-2
+                            strong.text-secondary Ngày tạo:
+                            |
+                            if song.createdAt
+                                = new Date(song.createdAt).toLocaleDateString('vi-VN')
+                            else
+                                span.text-muted Không xác định
+
+                        p.mb-2
+                            strong.text-secondary Cập nhật gần nhất:
+                            |
+                            if song.updatedAt
+                                = new Date(song.updatedAt).toLocaleDateString('vi-VN')
+                            else
+                                span.text-muted Không xác định
+
+                        // ===== File nhạc =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 File nhạc
+                            if song.audio
+                                audio.w-100(controls src=song.audio)
+                            else
+                                p.text-muted Không có file nhạc
+
+                        // ===== Mô tả =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 Mô tả
+                            if song.description
+                                .p-3.border.rounded.bg-light!= song.description
+                            else
+                                p.text-muted Không có mô tả
+
+                        // ===== Lời thoại =====
+                        .col-md-12
+                            hr
+                            label.form-label.fw-semibold.mb-2 Lời thoại
+                            if song.lyrics
+                                .p-3.border.rounded.bg-light!= song.lyrics
+                            else
+                                p.text-muted Không có lời thoại
+
+                    hr.my-4
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/song')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        a.btn.btn-primary.shadow-sm(href=prefixName + '/song/edit/' + song._id)
+                            i.fas.fa-edit.me-2
+                            | Chỉnh sửa
+                else
+                    p.text-danger Không tìm thấy bài hát.

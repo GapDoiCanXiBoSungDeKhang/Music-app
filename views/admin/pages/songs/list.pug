@@ -55,7 +55,7 @@ block content
                                     td.text-center
                                         img.song-thumbnail(src=song.avatar || '/images/no-image.png', alt=song.title)
                                     td
-                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/songs/detail/${song._id}`)= song.title
+                                        a.text-decoration-none.text-primary.fw-semibold(href=prefixName + `/song/detail/${song._id}`)= song.title
                                     td= song.singerId.fullName || '-'
                                     td= song.topicId.title || '-'
                                     td.text-center #{song.views ? song.views.toLocaleString() : 0}

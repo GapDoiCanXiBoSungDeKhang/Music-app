@@ -41,6 +41,16 @@ export class controller {
         res.render('admin/pages/songs/edit.pug', {
             titlePage: 'Trang chỉnh sửa',
             song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false})
+        });
+    }
+
+    async detail(req: Request, res: Response) {
+        res.render('admin/pages/songs/detail.pug', {
+            titlePage: 'Trang chi tiết',
+            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false})
+                .populate('singerId', 'fullName')
+                .populate('topicId', 'title')
+                .exec()
         })
     }
 }
