@@ -3,10 +3,9 @@ import {Request, Response} from 'express';
 
 import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from '../../../common/model/topic.model';
+import {SongModel} from "../../../common/model/song.model";
 
 import {songService} from '../service/song.service';
-import {SongModel} from "../../../common/model/song.model";
-import mongoose from "mongoose";
 const serviceInstance = new songService();
 
 export class controller {

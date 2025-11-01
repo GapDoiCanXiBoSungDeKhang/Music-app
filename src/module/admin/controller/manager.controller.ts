@@ -19,4 +19,10 @@ export class controller {
             titlePage: 'Trang tạo tài khoản quản lý'
         });
     }
+
+    createPost(req: Request, res: Response) {
+        res.json({
+            data: req.body
+        })
+    }
 }

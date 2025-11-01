@@ -9,4 +9,6 @@ router.get('/', controllerInstance.index);
 
 router.get('/create', controllerInstance.create);
 
+router.post('/create', controllerInstance.createPost);
+
 export default router;

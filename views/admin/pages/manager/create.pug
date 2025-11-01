@@ -8,7 +8,7 @@ block content
             .card-body.p-4
                 h4.fw-bold.text-dark.mb-4 Thêm mới tài khoản quản lý
 
-                form(method='POST', action=prefixName + '/manager/create.pug', enctype='multipart/form-data')
+                form(method='POST', action=prefixName + '/manager/create', enctype='multipart/form-data')
                     .row.g-4
                         // ===== Họ và tên =====
                         .col-md-12
@@ -27,6 +27,13 @@ block content
                         .col-md-6
                             label.form-label.fw-semibold(for='password') Mật khẩu
                             input.form-control.shadow-sm(type='password', id='password', name='password', placeholder='Nhập mật khẩu', required)
+                            ul
+                                li
+                                    label.form-label.fw-semibold phải ít nhất 1 chữ số
+                                li
+                                    label.form-label.fw-semibold độ dài phải bằng lớn hơn 8 ký tự
+                                li
+                                    label.form-label.fw-semibold không khoảng cách
                         .col-md-6
                             label.form-label.fw-semibold(for='roleId') Vai trò
                             select.form-select.shadow-sm(name='roleId', id='roleId', required)

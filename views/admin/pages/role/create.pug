@@ -6,23 +6,12 @@ block content
             .card-body.p-4
                 h4.fw-bold.text-dark.mb-4 Thêm mới vai trò
 
-                form(method='POST', action=prefixName + '/role/create', enctype='multipart/form-data')
+                form(method='POST', action=prefixName + '/role/create')
                     .row.g-4
                         // ===== Tên vai trò =====
                         .col-md-6
                             label.form-label.fw-semibold(for='title') Tên vai trò
                             input.form-control.shadow-sm(type='text', id='title', name='title', placeholder='Nhập tên vai trò', required)
-
-                        // ===== Quyền hạn =====
-                        .col-md-12
-                            label.form-label.fw-semibold(for='permissions') Quyền hạn
-                            select.form-select.shadow-sm(name='permissions', id='permissions')
-                                option(value='') -- Chọn quyền hạn --
-                                if permissions && permissions.length
-                                    each p in permissions
-                                        option(value=p._id)= p.title
-                                else
-                                    option(value='') Không có quyền hạn nào
 
                         // ===== Mô tả =====
                         .col-md-12
