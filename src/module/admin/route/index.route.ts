@@ -32,7 +32,7 @@ export default (app: Application) => {
 
     app.use(prefixNameConfig.PATH_ADMIN + '/manager', isAuthenticated, managerRoute);
 
-    // app.use(prefixNameConfig.PATH_ADMIN + '/profile', profileRoute);
+    app.use(prefixNameConfig.PATH_ADMIN + '/profile', isAuthenticated, profileRoute);
 
     app.use(prefixNameConfig.PATH_ADMIN + '/auth', authRoute);
 }
