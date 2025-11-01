@@ -7,5 +7,6 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
         req.flash('error', 'Vui lòng đăng nhập');
         res.redirect(prefixNameConfig.PATH_ADMIN + '/auth/login');
     }
+    res.locals.manager = req.user;
     next();
 };
