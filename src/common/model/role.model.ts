@@ -26,7 +26,7 @@ const roleSchema = new Schema<IRole>({
     updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
     deletedBy: {
         managerId: { type: Schema.Types.ObjectId, ref: 'Manager' },
-        at: { type: Date, default: new Date() },
+        at: { type: Date, default: new Date },
     }
 }, {
     timestamps: true,

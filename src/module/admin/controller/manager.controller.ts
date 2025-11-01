@@ -23,9 +23,17 @@ export class controller {
         });
     }
 
-    createPost(req: Request, res: Response) {
-        res.json({
-            data: req.body
-        })
+    async createPost(req: Request, res: Response) {
+        try {
+            const data = await serviceInstance.create(req.body);
+            if (data) {
+                req.flash('error', data as string);
+                return res.redirect(req.get('Referrer') || '/');
+            }
+            req.flash('success', 'Tạo tài khoản quản trị thành công');
+        } catch (e) {
+            req.flash('error', 'Lỗi tạo tài khoản quản trị');
+        }
+        res.redirect(req.get('Referrer') || '/');
     }
 }

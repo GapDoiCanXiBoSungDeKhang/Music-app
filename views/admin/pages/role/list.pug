@@ -48,10 +48,10 @@ block content
                             each role, index in roles
                                 tr
                                     td.text-center
-                                        input.form-check-input.role-checkbox(type='checkbox', value=role._id)
+                                        input.form-check-input.song-checkbox(type='checkbox', value=role._id)
                                     td #{index + 1}
                                     td.text-capitalize= role.title || '-'
-                                    td= role.description || '-'
+                                    td !{role.description}
                                     td
                                         if role.permissions && role.permissions.length
                                             span.badge.bg-info đã gán

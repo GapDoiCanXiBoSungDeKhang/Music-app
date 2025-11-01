@@ -33,7 +33,7 @@ const ManagerSchema = new Schema<IManager>(
         updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
         deletedBy: {
             managerId: {type: Schema.Types.ObjectId, ref: 'Manager'},
-            at: { type: Date, default: Date.now },
+            at: { type: Date, default: new Date },
         },
         status: { type: String, enum: ['active', 'inactive'], default: 'active' },
         deleted: { type: Boolean, default: false },
