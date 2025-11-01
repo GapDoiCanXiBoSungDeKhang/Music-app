@@ -13,9 +13,9 @@ export interface ISong extends Document {
     status?: 'active' | 'inactive';
     deleted?: boolean;
     deletedAt?: Date;
-    createdBy: {managerId: Schema.Types.ObjectId, at: Date};
+    createdBy?: {managerId: Schema.Types.ObjectId, at: Date};
     updatedBlogId?: Schema.Types.ObjectId;
-    deletedBy: {managerId: Schema.Types.ObjectId, at: Date};
+    deletedBy?: {managerId: Schema.Types.ObjectId, at: Date};
     slug: string;
 }
 
@@ -68,7 +68,7 @@ const SongSchema = new Schema<ISong>({
     updatedBlogId: {type: Schema.Types.ObjectId, ref: 'BlogUpdated'},
     deletedBy: {
         managerId: {type: Schema.Types.ObjectId, ref: 'Manager'},
-        at: { type: Date, default: Date.now },
+        at: { type: Date, default: new Date() },
     },
 }, {
     timestamps: true

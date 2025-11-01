@@ -39,3 +39,20 @@ export const uploadSingle = async (req: Request, res: Response, next: NextFuncti
     }
     next();
 }
+
+export const uploadFields = async (req: Request, res: Response, next: NextFunction) => {
+    for (const key in req.files) {
+        req.body[key] = [];
+
+        const array = req.files[key];
+        for (const item of array) {
+            try {
+                const res = await uploadCloud(item.buffer);
+                req.body[key].push(res);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    }
+    next();
+}

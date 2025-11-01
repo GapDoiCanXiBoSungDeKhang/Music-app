@@ -214,6 +214,11 @@
     "@types/node" "*"
     "@types/send" "<1"
 
+"@types/slug@^5.0.9":
+  version "5.0.9"
+  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-5.0.9.tgz#e5b213a9d7797d40d362ba85e2a7bbcd4df4ed40"
+  integrity sha512-6Yp8BSplP35Esa/wOG1wLNKiqXevpQTEF/RcL/NV6BBQaMmZh4YlDwCgrrFSoUE4xAGvnKd5c+lkQJmPrBAzfQ==
+
 "@types/streamifier@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@types/streamifier/-/streamifier-0.1.2.tgz#c60aa16e211de2191bba43658ee078654e9b1b18"
@@ -1394,6 +1399,11 @@ simple-update-notifier@^2.0.0:
   integrity sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==
   dependencies:
     semver "^7.5.3"
+
+slug@^11.0.1:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-11.0.1.tgz#917eef01e211c12f7a28727911c023f9ce01349b"
+  integrity sha512-VrM060OM/E7rdLQSnp6JHrzFfJFmqQBp0+TMhZStnEB8PfNliaZ9UWYjTHGHLUFVJorZ8TjVd/aKvIxHWU2O7g==
 
 sparse-bitfield@^3.0.3:
   version "3.0.3"

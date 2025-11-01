@@ -13,7 +13,7 @@ const controllerInstance = new controller();
 import {updatedLikeSongUser} from '../../../common/validate/songView.validate';
 
 // middleware
-import {uploadSingle} from '../../../common/middleware/upload.middleware'
+import {uploadFields} from '../../../common/middleware/upload.middleware'
 
 router.get('/', controllerInstance.index);
 
@@ -21,12 +21,11 @@ router.get('/create', controllerInstance.create);
 
 router.post(
     '/create',
-    // upload.fields([
-    //     { name: 'avatar', maxCount: 1 },
-    //     { name: 'audio', maxCount: 1 }
-    // ]),
-    upload.single('avatar'),
-    // uploadSingle,
+    upload.fields([
+        { name: 'avatar', maxCount: 1 },
+        { name: 'audio', maxCount: 1 }
+    ]),
+    uploadFields,
     controllerInstance.createPost
 );
 

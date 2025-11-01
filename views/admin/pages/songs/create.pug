@@ -8,7 +8,7 @@ block content
             .card-body.p-4
                 h4.fw-bold.text-dark.mb-4 Thêm mới bài hát
 
-                form(method='POST', action=prefixName + '/song/create.pug', enctype='multipart/form-data')
+                form(method='POST', action=prefixName + '/song/create', enctype='multipart/form-data')
                     .row.g-4
                         // ===== Tên bài hát =====
                         .col-md-12
@@ -22,7 +22,7 @@ block content
                                 option(value='') -- Chọn ca sĩ --
                                 if singers && singers.length
                                     each s in singers
-                                        option(value=s._id)= s.name
+                                        option(value=s._id)= s.fullName
                                 else
                                     option(value='') Không có ca sĩ nào
                         .col-md-6
@@ -31,7 +31,7 @@ block content
                                 option(value='') -- Chọn chủ đề --
                                 if topics && topics.length
                                     each t in topics
-                                        option(value=t._id)= t.name
+                                        option(value=t._id)= t.title
                                 else
                                     option(value='') Không có chủ đề nào
 

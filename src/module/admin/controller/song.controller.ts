@@ -1,4 +1,8 @@
-import {NextFunction, Request, Response} from 'express';
+import {Request, Response} from 'express';
+
+
+import {SingerModel} from '../../../common/model/singer.model';
+import {TopicModel} from '../../../common/model/topic.model';
 
 import {songService} from '../service/song.service';
 const serviceInstance = new songService();
@@ -12,16 +16,22 @@ export class controller {
         });
     }
 
-    create(req: Request, res: Response) {
+    async create(req: Request, res: Response) {
+        const filter = {status: 'active', deleted: false};
         res.render('admin/pages/songs/create.pug', {
             titlePage: 'Thêm mới bài hát',
+            singers: await SingerModel.find(filter).select('fullName'),
+            topics: await TopicModel.find(filter).select('title')
         });
     }
 
-    createPost(req: Request, res: Response) {
-        res.status(200).json({
-            data: req.body,
-            file: req.file,
-        });
+    async createPost(req: Request, res: Response) {
+        try {
+            await serviceInstance.create(req.body);
+            req.flash('success', 'Tạo mới bài hát thành công!');
+        } catch (e) {
+            req.flash('error', 'Lỗi tạo bài hát');
+        }
+        res.redirect(req.get('Referrer') || '/');
     }
 }
