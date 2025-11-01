@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 
 import {RoleModel} from '../../../common/model/role.model';
+import {ManagerModel} from '../../../common/model/manager.model';
 
 import {songService} from '../service/manager.service';
 const serviceInstance = new songService();
@@ -35,5 +36,13 @@ export class controller {
             req.flash('error', 'Lỗi tạo tài khoản quản trị');
         }
         res.redirect(req.get('Referrer') || '/');
+    }
+
+    async edit(req: Request, res: Response) {
+        res.render('admin/pages/manager/edit.pug', {
+            titlePage: 'Trang chỉnh sửa',
+            manager: await ManagerModel.findOne({_id: req.params.id, deleted: false, status: 'active'}).exec(),
+            roles: await RoleModel.find({deleted: false, status: 'active'}).select('title').exec(),
+        })
     }
 }

@@ -1,0 +1,125 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Cập nhật thông tin quản lý
+
+                form(method='POST', action=prefixName + '/manager/' + manager._id + '?_method=PATCH', enctype='multipart/form-data')
+                    .row.g-4
+                        // ===== Họ và tên =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='fullName') Họ và tên
+                            input.form-control.shadow-sm(
+                                type='text',
+                                id='name',
+                                name='fullName',
+                                placeholder='Nhập họ và tên',
+                                required,
+                                value=manager.fullName
+                            )
+
+                        // ===== Số điện thoại & Email =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='phone') Số điện thoại
+                            input.form-control.shadow-sm(
+                                type='text',
+                                id='phone',
+                                name='phone',
+                                placeholder='Nhập số điện thoại',
+                                value=manager.phone
+                            )
+                        .col-md-6
+                            label.form-label.fw-semibold(for='email') Email
+                            input.form-control.shadow-sm(
+                                type='email',
+                                id='email',
+                                name='email',
+                                placeholder='Nhập địa chỉ email',
+                                required,
+                                value=manager.email
+                            )
+
+                        // ===== Mật khẩu =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='password') Mật khẩu (chỉ nhập nếu muốn đổi)
+                            input.form-control.shadow-sm(
+                                type='password',
+                                id='password',
+                                name='password',
+                                placeholder='Để trống nếu không thay đổi'
+                            )
+                            ul
+                                li
+                                    label.form-label.fw-semibold phải ít nhất 1 chữ số
+                                li
+                                    label.form-label.fw-semibold độ dài phải bằng lớn hơn 8 ký tự
+                                li
+                                    label.form-label.fw-semibold không khoảng cách
+
+                        // ===== Vai trò =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='roleId') Vai trò
+                            select.form-select.shadow-sm(name='roleId', id='roleId', required)
+                                option(value='') -- Chọn vai trò --
+                                if roles && roles.length
+                                    each r in roles
+                                        if manager.roleId && manager.roleId.toString() === r._id.toString()
+                                            option(value=r._id, selected)= r.title
+                                        else
+                                            option(value=r._id)= r.title
+                                else
+                                    option(value='') Không có vai trò nào
+
+                        // ===== Ảnh đại diện =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='avatar') Ảnh đại diện
+                            input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
+                            #previewContainer.mt-3.position-relative
+                                if manager.avatar
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(
+                                        src=manager.avatar,
+                                        style='max-height:200px; object-fit:cover;'
+                                    )
+                                    button#removeImageBtn(
+                                        type='button',
+                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
+                                        style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;'
+                                    )
+                                        i.fas.fa-times
+                                else
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height:200px; object-fit:cover; display:none;')
+                                    button#removeImageBtn(
+                                        type='button',
+                                        class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm',
+                                        style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:none; align-items:center; justify-content:center;'
+                                    )
+                                        i.fas.fa-times
+
+                        // ===== Ghi chú (mô tả) =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='description') Ghi chú (tuỳ chọn)
+                            textarea.form-control.shadow-sm.tinymce-editor(
+                                id='description',
+                                name='description',
+                                rows='3',
+                                placeholder='Nhập ghi chú nội bộ hoặc mô tả ngắn...'
+                            )= manager.description || ''
+
+                        // ===== Trạng thái =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='status') Trạng thái
+                            select.form-select.shadow-sm(name='status', id='status')
+                                option(value='active', selected=(manager.status === 'active')) Active
+                                option(value='inactive', selected=(manager.status === 'inactive')) Inactive
+
+                    hr.my-4
+
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/manager')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        button.btn.btn-primary.shadow-sm(type='submit')
+                            i.fas.fa-save.me-2
+                            | Cập nhật
