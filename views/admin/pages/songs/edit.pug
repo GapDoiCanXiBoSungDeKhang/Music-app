@@ -1,0 +1,94 @@
+extends ../../layouts/default
+
+block content
+    .container-fluid.py-4
+        .card.shadow-sm.border-0.rounded-4
+            .card-body.p-4
+                h4.fw-bold.text-dark.mb-4 Chỉnh sửa bài hát
+
+                form(method='POST', action=prefixName + '/song/edit/' + song._id, enctype='multipart/form-data')
+                    .row.g-4
+                        // ===== Tên bài hát =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='title') Tên bài hát
+                            input.form-control.shadow-sm(
+                                type='text',
+                                id='name',
+                                name='title',
+                                placeholder='Nhập tên bài hát',
+                                value=song.title,
+                                required
+                            )
+
+                        // ===== Ca sĩ & Chủ đề =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='singerId') Ca sĩ
+                            select.form-select.shadow-sm(name='singerId', id='singer', required)
+                                option(value='') -- Chọn ca sĩ --
+                                if singers && singers.length
+                                    each s in singers
+                                        option(value=s._id, selected=(song.singerId && song.singerId.toString() == s._id.toString()))= s.fullName
+                                else
+                                    option(value='') Không có ca sĩ nào
+                        .col-md-6
+                            label.form-label.fw-semibold(for='topicId') Chủ đề
+                            select.form-select.shadow-sm(name='topicId', id='topic', required)
+                                option(value='') -- Chọn chủ đề --
+                                if topics && topics.length
+                                    each t in topics
+                                        option(value=t._id, selected=(song.topicId && song.topicId.toString() == t._id.toString()))= t.title
+                                else
+                                    option(value='') Không có chủ đề nào
+
+                        // ===== Hình ảnh & File nhạc =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='thumbnailInput') Ảnh bìa
+                            input.form-control.shadow-sm(type='file', id='thumbnailInput', name='avatar', accept='image/*')
+
+                            if song.avatar
+                                #previewContainer.mt-3.position-relative
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(src=song.avatar, style='max-height: 200px; object-fit: cover;')
+                                    button#removeImageBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
+                                        i.fas.fa-times
+                            else
+                                #previewContainer.mt-3.position-relative(style='display:none;')
+                                    img#previewImage.img-thumbnail.rounded-3.w-100(style='max-height: 200px; object-fit: cover;')
+
+                        .col-md-6
+                            label.form-label.fw-semibold(for='audioInput') File nhạc
+                            input.form-control.shadow-sm(type='file', id='audioInput', name='audio', accept='audio/*')
+                            if song.audio
+                                #audioPreviewContainer.mt-3.position-relative
+                                    audio#audioPreview.w-100(controls style='max-height: 60px;' src=song.audio)
+                                    button#audioRemoveBtn(type='button', class='btn btn-danger btn-sm position-absolute top-0 end-0 translate-middle rounded-circle shadow-sm', style='transform: translate(40%, -40%); width:28px; height:28px; padding:0; display:flex; align-items:center; justify-content:center;')
+                                        i.fas.fa-times
+                            else
+                                #audioPreviewContainer.mt-3.position-relative(style='display:none;')
+                                    audio#audioPreview.w-100(controls style='max-height: 60px;')
+
+                        // ===== Mô tả =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='description') Mô tả
+                            textarea.form-control.shadow-sm.tinymce-editor(id='description', name='description', rows='3', placeholder='Nhập mô tả ngắn...')= song.description
+
+                        // ===== Lời thoại =====
+                        .col-md-12
+                            label.form-label.fw-semibold(for='lyrics') Lời thoại
+                            textarea.form-control.shadow-sm.tinymce-editor(id='lyrics', name='lyrics', rows='3', placeholder='Nhập Lời thoại...')= song.lyrics
+
+                        // ===== Trạng thái =====
+                        .col-md-6
+                            label.form-label.fw-semibold(for='status') Trạng thái
+                            select.form-select.shadow-sm(name='status', id='status')
+                                option(value='active', selected=song.status === 'active') Active
+                                option(value='inactive', selected=song.status === 'inactive') Inactive
+
+                    hr.my-4
+
+                    .d-flex.justify-content-end.gap-2
+                        a.btn.btn-light.border.shadow-sm(href=prefixName + '/song')
+                            i.fas.fa-arrow-left.me-2
+                            | Quay lại
+                        button.btn.btn-primary.shadow-sm(type='submit')
+                            i.fas.fa-save.me-2
+                            | Cập nhật bài hát

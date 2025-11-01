@@ -1,8 +1,6 @@
 extends ../../layouts/default
 
 block content
-    link(rel='stylesheet', href='/admin/css/song-form.css')
-
     .container-fluid.py-4
         .card.shadow-sm.border-0.rounded-4
             .card-body.p-4
@@ -58,7 +56,7 @@ block content
 
                         // ===== Lời thoại =====
                         .col-md-12
-                            label.form-label.fw-semibold(for='lyrics') Mô tả
+                            label.form-label.fw-semibold(for='lyrics') Lời thoại
                             textarea.form-control.shadow-sm.tinymce-editor(id='lyrics', name='lyrics', rows='3', placeholder='Nhập Lời thoại...')
 
                         // ===== Trạng thái =====

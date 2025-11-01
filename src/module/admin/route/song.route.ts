@@ -29,4 +29,6 @@ router.post(
     controllerInstance.createPost
 );
 
+router.get('/edit/:id', controllerInstance.edit);
+
 export default router;

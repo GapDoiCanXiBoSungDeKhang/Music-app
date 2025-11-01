@@ -5,6 +5,8 @@ import {SingerModel} from '../../../common/model/singer.model';
 import {TopicModel} from '../../../common/model/topic.model';
 
 import {songService} from '../service/song.service';
+import {SongModel} from "../../../common/model/song.model";
+import mongoose from "mongoose";
 const serviceInstance = new songService();
 
 export class controller {
@@ -33,5 +35,12 @@ export class controller {
             req.flash('error', 'Lỗi tạo bài hát');
         }
         res.redirect(req.get('Referrer') || '/');
+    }
+
+    async edit(req: Request, res: Response) {
+        res.render('admin/pages/songs/edit.pug', {
+            titlePage: 'Trang chỉnh sửa',
+            song: await SongModel.findOne({_id: req.params.id, status: 'active', deleted: false})
+        })
     }
 }
