@@ -12,7 +12,6 @@ export class controller {
     }
 
     edit(req: Request, res: Response) {
-        console.log(req.user);
         res.render('admin/pages/profile/edit', {
             titlePage: 'Trang chỉnh sửa thông tin cá nhân',
             manager: req.user,
