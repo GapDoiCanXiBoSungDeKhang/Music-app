@@ -2,7 +2,7 @@
 
 Đây là dự án học tập cá nhân — một ứng dụng nghe nhạc trực tuyến, xây dựng bằng Node.js, Express, TypeScript và MongoDB. Dự án gồm hai phần: trang dành cho người nghe (client) và trang quản trị dành cho admin (gọi trong code là "manager").
 
-Dự án thực hành xây dựng một hệ thống có nhiều luồng tương tác: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo khi có bài hát mới, xác thực bằng Passport.js với session, và một hệ phân quyền được tách thành các collection riêng thay vì nhúng trực tiếp vào role.
+Dự án thực hành xây dựng một hệ thống có nhiều luồng tương tác: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo tĩnh khi có bài hát mới, xác thực bằng Passport.js với session, và một hệ phân quyền được tách thành các collection riêng biệt.
 
 ---
 
@@ -10,13 +10,13 @@ Dự án thực hành xây dựng một hệ thống có nhiều luồng tương
 
 Dự án được làm trong quá trình tự học, có tìm hiểu từ các dự án mã nguồn mở trên GitHub và các bài chia sẻ trên mạng xã hội. Gemini được dùng để tìm hiểu luồng nghiệp vụ (cách một hệ thống nghe nhạc tổ chức theo dõi ca sĩ, thông báo, phân quyền). ChatGPT được dùng để hỗ trợ viết code cho các hàm phức tạp hơn (dựng cây bình luận bằng hash map, toggle like/dislike xử lý hai chiều trong một update, gửi thông báo hàng loạt tới người theo dõi), phần giao diện, một số đoạn JavaScript phía client (trình phát nhạc, AJAX like/comment), và hỗ trợ debug lỗi.
 
-Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()` để truy xuất dữ liệu liên quan trong cùng một lần query. Index được thêm cho các truy vấn diễn ra thường xuyên để tối ưu tốc độ tìm kiếm bài hát, ca sĩ, bình luận khi dữ liệu lớn (chi tiết ở mục 10 phần Workflows).
+Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()` để truy xuất dữ liệu liên quan trong cùng một lần query. Index được thêm cho các truy vấn diễn ra thường xuyên để tối ưu tốc độ tìm kiếm bài hát, ca sĩ, bình luận khi dữ liệu lớn.
 
 ---
 
 ## Table of Contents
 
-- [Dự án này làm được gì](#dự-án-này-làm-được-gì)
+- [Dự án này làm được](#dự-án-này-làm-được)
 - [Tech Stack](#tech-stack)
 - [System Architecture](#system-architecture)
 - [Database Schema](#database-schema)
@@ -38,7 +38,7 @@ Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()
 
 ---
 
-## Dự án này làm được gì
+## Dự án này làm được
 
 Ứng dụng chia thành hai khu vực, dùng chung một Express app nhưng có session và tiền tố route riêng:
 
@@ -96,65 +96,65 @@ Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()
 ## System Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│                          BROWSER                                │
-│   Cookie "client.sid"  (người nghe)                              │
-│   Cookie "admin.sid"   (quản trị viên, path scope = /server)     │
-└───────────────────────────┬────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│                          BROWSER                                      │
+│   Cookie "client.sid"  (người nghe)                                   │
+│   Cookie "admin.sid"   (quản trị viên, path scope = /server)          │
+└───────────────────────────┬───────────────────────────────────────────┘
                             │ HTTP Request
-                            ▼
-┌────────────────────────────────────────────────────────────────┐
-│                     EXPRESS SERVER (app.ts)                    │
-│                                                                │
-│  generalSettingMiddleware → kiểm tra maintenance mode toàn cục  │
-│                                                                │
-│  ┌──────────────────────┐      ┌───────────────────────────┐   │
-│  │   Client Routes      │      │   Admin Routes (/server)   │   │
-│  │   /home  /song       │      │   /dashboard  /song        │   │
-│  │   /singer  /topic    │      │   /singer  /topic          │   │
-│  │   /api (comment)     │      │   /user  /manager           │   │
-│  │   /profile  /playlist│      │   /role  /permission        │   │
-│  │   /notification      │      │   /profile  /setting        │   │
-│  │   /feed  /contact    │      │   /verification              │   │
-│  │   /auth  /verification│     │   /auth                     │   │
-│  └──────────┬────────────┘     └─────────────┬───────────────┘   │
-│             │                                │                   │
-│  ┌──────────▼────────────────────────────────▼───────────────┐  │
-│  │        Passport.js (session-based, 2 strategy)              │  │
-│  │  local-client → tìm trong UserModel                         │  │
-│  │  local-server → tìm trong ManagerModel                      │  │
-│  │  deserializeUser → populate đầy đủ quan hệ theo type         │  │
-│  └──────────┬────────────────────────────────┬───────────────┘  │
-│             │                                │                   │
-│  ┌──────────▼─────────┐          ┌───────────▼────────────────┐ │
-│  │ isAuthenticated     │          │ isAuthenticated (admin)     │ │
-│  │ (client) — kiểm tra │          │ + checkPermission(perm)     │ │
-│  │ req.user status/    │          │   → so req.user.roleId      │ │
-│  │ deleted             │          │     .permissions.listPermission│ │
-│  └──────────┬─────────┘          └───────────┬────────────────┘ │
-│             │                                │                   │
-│  ┌──────────▼────────────────────────────────▼───────────────┐  │
-│  │              Controller → Service Layer                    │  │
-│  │   Mỗi module có Controller (điều hướng HTTP) và Service     │  │
-│  │   (business logic + query DB) tách riêng                    │  │
-│  └──────────┬───────────────────────────────────────────────┘  │
-│             │                                                   │
-│  ┌──────────▼───────────────────────────────────────────────┐  │
-│  │         Shared Helper / Logic                              │  │
-│  │  getChildAndParentComments — dựng cây bình luận (hash map)  │  │
-│  │  filterArrayLog — gom lịch sử chỉnh sửa từ BlogUpdated       │  │
-│  │  pagination, cntDocument, generateRandom, sendMail, unidecode│  │
-│  └──────────┬───────────────────────────────────────────────┘  │
-│             │                                                   │
-│  ┌──────────▼───────────────────────────────────────────────┐  │
-│  │                 Model Layer (Mongoose)                     │  │
-│  └──────────┬───────────────────────────────────────────────┘  │
-└─────────────┼───────────────────────────────────────────────────┘
+                            @
+┌───────────────────────────────────────────────────────────────────────┐
+│                     EXPRESS SERVER (app.ts)                           │  
+│                                                                       │
+│  generalSettingMiddleware → kiểm tra maintenance mode toàn cục        │
+│                                                                       │
+│  ┌───────────────────────┐     ┌─────────────────────────────┐        │
+│  │   Client Routes       │     │   Admin Routes (/server)    │        │
+│  │   /home  /song        │     │   /dashboard  /song         │        │
+│  │   /singer  /topic     │     │   /singer  /topic           │        │
+│  │   /api (comment)      │     │   /user  /manager           │        │
+│  │   /profile  /playlist │     │   /role  /permission        │        │
+│  │   /notification       │     │   /profile  /setting        │        │
+│  │   /feed  /contact     │     │   /verification             │        │
+│  │   /auth  /verification│     │   /auth                     │        │
+│  └──────────┬────────────┘     └─────────────┬───────────────┘        │
+│             │                                │                        │
+│  ┌──────────@────────────────────────────────@───────────────┐        │
+│  │        Passport.js (session-based, 2 strategy)            │        │
+│  │  local-client → tìm trong UserModel                       │        │
+│  │  local-server → tìm trong ManagerModel                    │        │
+│  │  deserializeUser → populate đầy đủ quan hệ theo type      │        │
+│  └──────────┬────────────────────────────────┬───────────────┘        │
+│             │                                │                        │
+│  ┌──────────▼──────────┐          ┌───────────▼─────────────────────┐ │
+│  │ isAuthenticated     │          │ isAuthenticated (admin)         │ │
+│  │ (client) — kiểm tra │          │ + checkPermission(perm)         │ │
+│  │ req.user status/    │          │   → so req.user.roleId          │ │
+│  │ deleted             │          │     .permissions.listPermission │ │
+│  └──────────┬──────────┘          └───────────┬─────────────────────┘ │
+│             │                                │                        │
+│  ┌──────────▼────────────────────────────────▼─────────────────────┐  │
+│  │              Controller → Service Layer                         │  │
+│  │   Mỗi module có Controller (điều hướng HTTP) và Service         │  │
+│  │   (business logic + query DB) tách riêng                        │  │
+│  └──────────┬──────────────────────────────────────────────────────┘  │
+│             │                                                         │
+│  ┌──────────▼──────────────────────────────────────────────────────┐  │
+│  │         Shared Helper / Logic                                   │  │
+│  │  getChildAndParentComments — dựng cây bình luận (hash map)      │  │
+│  │  filterArrayLog — gom lịch sử chỉnh sửa từ BlogUpdated          │  │
+│  │  pagination, cntDocument, generateRandom, sendMail, unidecode   │  │
+│  └──────────┬──────────────────────────────────────────────────────┘  │
+│             │                                                         │
+│  ┌──────────▼──────────────────────────────────────────────────────┐  │
+│  │                 Model Layer (Mongoose)                          │  │
+│  └──────────┬──────────────────────────────────────────────────────┘  │
+└─────────────┼─────────────────────────────────────────────────────────┘
               │
-  ┌───────────▼────────────┐         ┌──────────────────────┐
-  │      MongoDB Atlas      │         │      Cloudinary        │
+  ┌───────────▼─────────────┐         ┌─────────────────────────┐
+  │      MongoDB Atlas      │         │      Cloudinary         │
   │ users, managers, roles, │         │ (ảnh bìa + file audio)  │
-  │ permissions, songs,     │         └──────────────────────┘
+  │ permissions, songs,     │         └─────────────────────────┘
   │ singers, topics,        │
   │ comments, songsLike,    │
   │ songsFavourite,         │
