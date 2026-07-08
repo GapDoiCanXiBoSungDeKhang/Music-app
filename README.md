@@ -2,18 +2,26 @@
 
 Đây là dự án học tập cá nhân — một ứng dụng nghe nhạc trực tuyến, xây dựng bằng Node.js, Express, TypeScript và MongoDB. Dự án gồm hai phần: trang dành cho người nghe (client) và trang quản trị dành cho admin (gọi trong code là "manager").
 
-Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thống có nhiều luồng tương tác thực tế hơn dự án bán hàng trước đó: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo khi có bài hát mới, xác thực bằng Passport.js với session thay vì tự viết cookie thủ công, và một hệ phân quyền được tách thành các collection riêng thay vì nhúng trực tiếp vào role.
+Dự án thực hành xây dựng một hệ thống có nhiều luồng tương tác: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo khi có bài hát mới, xác thực bằng Passport.js với session, và một hệ phân quyền được tách thành các collection riêng thay vì nhúng trực tiếp vào role.
 
 ---
 
-## 📋 Table of Contents
+## Quá trình xây dựng
 
-- [Dự án này làm được gì](#-dự-án-này-làm-được-gì)
-- [Tech Stack](#-tech-stack)
-- [System Architecture](#-system-architecture)
-- [Database Schema](#-database-schema)
-- [Project Structure](#-project-structure)
-- [Application Workflows](#-application-workflows)
+Dự án được làm trong quá trình tự học, có tìm hiểu từ các dự án mã nguồn mở trên GitHub và các bài chia sẻ trên mạng xã hội. Gemini được dùng để tìm hiểu luồng nghiệp vụ (cách một hệ thống nghe nhạc tổ chức theo dõi ca sĩ, thông báo, phân quyền). ChatGPT được dùng để hỗ trợ viết code cho các hàm phức tạp hơn (dựng cây bình luận bằng hash map, toggle like/dislike xử lý hai chiều trong một update, gửi thông báo hàng loạt tới người theo dõi), phần giao diện, một số đoạn JavaScript phía client (trình phát nhạc, AJAX like/comment), và hỗ trợ debug lỗi.
+
+Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()` để truy xuất dữ liệu liên quan trong cùng một lần query. Index được thêm cho các truy vấn diễn ra thường xuyên để tối ưu tốc độ tìm kiếm bài hát, ca sĩ, bình luận khi dữ liệu lớn (chi tiết ở mục 10 phần Workflows).
+
+---
+
+## Table of Contents
+
+- [Dự án này làm được gì](#dự-án-này-làm-được-gì)
+- [Tech Stack](#tech-stack)
+- [System Architecture](#system-architecture)
+- [Database Schema](#database-schema)
+- [Project Structure](#project-structure)
+- [Application Workflows](#application-workflows)
   - [Authentication Flow (Passport.js + Session)](#1-authentication-flow-passportjs--session)
   - [Nghe nhạc — Lượt xem, Like, Yêu thích](#2-nghe-nhạc--lượt-xem-like-yêu-thích)
   - [Bình luận lồng nhau (Nested Comment)](#3-bình-luận-lồng-nhau-nested-comment)
@@ -23,15 +31,14 @@ Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thố
   - [Phân quyền (RBAC) — Role tách khỏi Permission](#7-phân-quyền-rbac--role-tách-khỏi-permission)
   - [Chế độ bảo trì (Maintenance Mode)](#8-chế-độ-bảo-trì-maintenance-mode)
   - [Upload file lên Cloudinary](#9-upload-file-lên-cloudinary)
-  - [Tối ưu truy vấn bằng Index (MongoDB)](#10-tối-ưu-truy-vấn-bằng-index-mongodb)
-- [API & Routes Reference](#-api--routes-reference)
-- [Environment Variables](#-environment-variables)
-- [Getting Started](#-getting-started)
-- [Một số cách xử lý đáng chú ý](#-một-số-cách-xử-lý-đáng-chú-ý)
+  - [Sử dụng Index để tối ưu truy vấn (MongoDB)](#10-sử-dụng-index-để-tối-ưu-truy-vấn-mongodb)
+- [API & Routes Reference](#api--routes-reference)
+- [Environment Variables](#environment-variables)
+- [Getting Started](#getting-started)
 
 ---
 
-## 🔍 Dự án này làm được gì
+## Dự án này làm được gì
 
 Ứng dụng chia thành hai khu vực, dùng chung một Express app nhưng có session và tiền tố route riêng:
 
@@ -66,7 +73,7 @@ Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thố
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -86,7 +93,7 @@ Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thố
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -160,9 +167,9 @@ Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thố
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
-Điểm khác biệt lớn nhất so với các dự án trước: **quan hệ giữa các collection dùng `ObjectId` + `populate()` thật sự** (thay vì lưu ID dưới dạng String rồi tự query thủ công), và **audit trail được tách thành collection riêng** thay vì nhúng mảng trực tiếp vào từng document.
+Quan hệ giữa các collection dùng `ObjectId` kết hợp `populate()` để liên kết bảng và truy xuất dữ liệu liên quan trong một lần query, thay vì lưu ID dưới dạng String rồi tự query thủ công. Audit trail (lịch sử chỉnh sửa) được tách thành collection riêng thay vì nhúng mảng trực tiếp vào từng document.
 
 ### `users` — Người nghe
 
@@ -368,7 +375,7 @@ Mục tiêu khi làm dự án này là thực hành xây dựng một hệ thố
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Music-app/
@@ -446,7 +453,7 @@ Music-app/
 
 ---
 
-## 🔄 Application Workflows
+## Application Workflows
 
 ### 1. Authentication Flow (Passport.js + Session)
 
@@ -608,7 +615,7 @@ DELETE /notification
 
 ### 5. Quên mật khẩu & Đổi mật khẩu qua OTP
 
-Điểm khác với 2 dự án trước: **đổi mật khẩu khi đã đăng nhập vẫn phải xác thực OTP qua email**, không chỉ áp dụng cho trường hợp quên mật khẩu.
+Đổi mật khẩu khi đã đăng nhập vẫn phải xác thực OTP qua email, không chỉ áp dụng cho trường hợp quên mật khẩu.
 
 ```
 [Trường hợp A — Quên mật khẩu, chưa đăng nhập]
@@ -677,7 +684,7 @@ riêng trỏ tới một document BlogUpdated riêng, không dùng chung một c
 
 ### 7. Phân quyền (RBAC) — Role tách khỏi Permission
 
-Khác với 2 dự án trước (mảng permission string nhúng thẳng vào Role), ở đây **Role và Permission là 2 collection riêng**, liên kết qua ObjectId.
+Role và Permission được tách thành **2 collection riêng**, liên kết qua ObjectId (thay vì nhúng thẳng mảng permission string vào Role).
 
 ```
 Cấu trúc dữ liệu:
@@ -706,7 +713,7 @@ export const checkPermission = (permission: string) => {
   };
 };
 
-// Sử dụng trực tiếp ở route, khác với 2 dự án trước (kiểm tra trong controller):
+// Kiểm tra quyền được gắn trực tiếp ở route, không kiểm tra trong controller:
 router.get("/", checkPermission("song_view"), controller.index);
 router.post("/create", checkPermission("song_create"), controller.createPost);
 ```
@@ -735,7 +742,7 @@ không cần restart server hay deploy lại.
 ### 9. Upload file lên Cloudinary
 
 ```
-Khác với 2 dự án trước (chỉ upload ảnh), ở đây còn upload cả file audio,
+Ngoài upload ảnh, dự án còn upload cả file audio,
 dùng resource_type: "auto" để Cloudinary tự nhận diện loại file.
 
 uploadFields middleware — xử lý nhiều field cùng lúc (route dùng upload.fields([...])):
@@ -754,60 +761,29 @@ Controller/Service sau đó lấy: body.avatar[0], body.audio[0]
 
 ---
 
-### 10. Tối ưu truy vấn bằng Index (MongoDB)
+### 10. Sử dụng Index để tối ưu truy vấn (MongoDB)
 
-Đây là phần được đầu tư thêm sau khi đã hoàn thiện chức năng — đọc lại các truy vấn hay dùng nhất trong dự án rồi thêm index tương ứng thay vì để MongoDB quét toàn bộ collection (`COLLSCAN`) mỗi lần query.
+Index được thêm cho các trường thường dùng để lọc và sắp xếp, giúp tối ưu tốc độ tìm kiếm bài hát, ca sĩ, bình luận khi dữ liệu lớn, tránh việc MongoDB phải quét toàn bộ collection mỗi lần truy vấn.
 
-```
-[Nguyên tắc áp dụng: Index theo đúng cách truy vấn thực tế đang chạy]
+| Collection | Index | Mục đích |
+|---|---|---|
+| `comments` | `{ song_id: 1, createdAt: -1 }` | Tối ưu lấy danh sách bình luận theo bài hát, sắp xếp mới nhất trước |
+| `comments` | `{ user_id: 1, createdAt: -1 }` | Tối ưu tra cứu bình luận theo người dùng |
+| `comments` | `{ parent_id: 1, createdAt: -1 }` | Tối ưu tra cứu các bình luận trả lời theo bình luận cha |
+| `comments` | `{ song_id: 1, likesCount: -1 }` | Tối ưu sắp xếp bình luận theo lượt like trong 1 bài hát |
+| `comments` | `{ song_id: 1, dislikesCount: -1 }` | Tối ưu sắp xếp bình luận theo lượt dislike trong 1 bài hát |
+| `songs` | `{ topicId: 1, createdAt: -1 }` | Tối ưu tìm bài hát theo chủ đề |
+| `songs` | `{ singerId: 1, createdAt: -1 }` | Tối ưu tìm bài hát theo ca sĩ |
+| `songs` | `{ slug: 1 }` (unique) | Tối ưu tra cứu bài hát theo slug, đồng thời đảm bảo slug không trùng |
+| `singers` | `{ slug: 1 }` (unique) | Tối ưu tra cứu ca sĩ theo slug, đảm bảo không trùng |
+| `topics` | `{ slug: 1 }` (unique) | Tối ưu tra cứu chủ đề theo slug, đảm bảo không trùng |
+| `forgot-password` | `{ expireAt: 1 }` (TTL, 60 giây) | Tự động xóa OTP hết hạn khỏi database |
 
-Trước khi thêm index, xác định 2 điều cho mỗi query hay lặp lại:
-  1. Trường nào dùng để LỌC (equality — ví dụ song_id, topicId, singerId)
-  2. Trường nào dùng để SẮP XẾP (sort — ví dụ createdAt, likesCount)
-→ Đưa cả 2 vào cùng 1 compound index, trường lọc đứng trước, trường sort đứng sau.
-  (Đây là thứ tự "Equality → Sort" quen dùng khi thiết kế compound index cho MongoDB.)
-```
-
-**Danh sách index đã thêm và lý do:**
-
-| Collection | Index | Loại | Query được tối ưu |
-|---|---|---|---|
-| `comments` | `{ song_id: 1, createdAt: -1 }` | Compound | `CommentModel.find({ song_id }).sort({ createdAt: -1 })` — lấy toàn bộ bình luận của 1 bài hát, mới nhất trước. Đây là query chạy mỗi lần mở trang chi tiết bài hát, tần suất cao nhất trong toàn bộ dự án |
-| `comments` | `{ user_id: 1, createdAt: -1 }` | Compound | Dự phòng cho truy vấn lịch sử bình luận của 1 user (tra cứu/kiểm duyệt), chưa có màn hình nào gọi tới ở thời điểm hiện tại |
-| `comments` | `{ parent_id: 1, createdAt: -1 }` | Compound | Dự phòng cho việc truy vấn riêng các bình luận trả lời theo `parent_id`. Hiện tại cây bình luận được dựng trong bộ nhớ từ toàn bộ kết quả `find({ song_id })` (mục 3), nên index này chưa thực sự được tận dụng — thêm sẵn để dễ chuyển sang phân trang theo nhánh reply sau này mà không cần đổi schema |
-| `comments` | `{ song_id: 1, likesCount: -1 }` | Compound | Dự phòng cho tính năng "bình luận nổi bật nhất" (sort theo lượt like) trong 1 bài hát — chưa có API/route nào implement tính năng này |
-| `comments` | `{ song_id: 1, dislikesCount: -1 }` | Compound | Tương tự, dự phòng cho việc lọc/kiểm duyệt bình luận bị dislike nhiều |
-| `songs` | `{ topicId: 1, createdAt: -1 }` | Compound | `SongModel.find({ topicId }).populate(...)` — lấy bài hát theo chủ đề, dùng ở trang danh sách theo topic |
-| `songs` | `{ singerId: 1, createdAt: -1 }` | Compound | `SongModel.find({ singerId }).sort({ createdAt: -1 })` — lấy bài hát theo ca sĩ ở trang chi tiết ca sĩ, khớp cả điều kiện lọc lẫn điều kiện sort mặc định ("mới nhất") |
-| `songs` | `{ slug: 1 }` | Unique | Tự tạo khi khai báo `unique: true` trên field `slug`. Dùng cho `findOne({ slug })` ở trang chi tiết bài hát — đồng thời đảm bảo không trùng slug giữa các bài hát |
-| `singers` | `{ slug: 1 }` | Unique | Tương tự — `findOne({ slug })` ở trang chi tiết ca sĩ, đảm bảo slug không trùng |
-| `topics` | `{ slug: 1 }` | Unique | Tương tự — `findOne({ slug })` ở trang danh sách bài hát theo chủ đề |
-| `forgot-password` | `{ expireAt: 1 }` | TTL (`expireAfterSeconds: 60`) | Không phải index tăng tốc truy vấn mà dùng để MongoDB tự xóa document sau 60 giây — cách tối ưu khác: giảm số lượng document cần quét trong collection theo thời gian, thay vì phải tự viết cron dọn dữ liệu (xem thêm ở mục 5) |
-
-**Ví dụ cụ thể — vì sao thứ tự trường trong compound index quan trọng:**
-
-```ts
-// Khai báo trong comment.model.ts
-CommentSchema.index({ song_id: 1, createdAt: -1 });
-
-// Query thực tế chạy mỗi lần mở 1 bài hát:
-CommentModel.find({ song_id: id }).sort({ createdAt: -1 });
-
-// Nếu khai báo ngược lại { createdAt: -1, song_id: 1 }, MongoDB vẫn dùng được
-// index này để lọc song_id, nhưng không tận dụng được để sort — vì phần đầu
-// index (createdAt) không khớp với điều kiện lọc equality (song_id).
-// Đặt song_id trước (trường lọc) rồi mới tới createdAt (trường sort) giúp
-// MongoDB dùng index để trả kết quả ĐÃ SẴN SÀNG THEO ĐÚNG THỨ TỰ, không cần
-// bước sort riêng (in-memory sort) sau khi lấy dữ liệu ra.
-```
-
-**Nhìn lại — index nào đang thực sự phát huy tác dụng, index nào là chuẩn bị trước:**
-
-Trong số các index đã thêm, 4 index sau đang được một query thực tế trong code sử dụng đúng cả điều kiện lọc lẫn điều kiện sort: `comments{song_id, createdAt}`, `songs{topicId, createdAt}`, `songs{singerId, createdAt}`, và 3 index unique trên `slug`. Các index còn lại (`parent_id`, `likesCount`, `dislikesCount`, `user_id`) được thêm trước cho những tính năng đã hình dung trong lúc thiết kế database nhưng chưa kịp làm giao diện/API tương ứng — để lại đây làm rõ để không nhầm là toàn bộ index đều đang "chạy có tác dụng".
+Cách thiết kế compound index: trường dùng để lọc (ví dụ `song_id`, `topicId`, `singerId`) đặt trước, trường dùng để sắp xếp (ví dụ `createdAt`) đặt sau, giúp MongoDB tận dụng index cho cả bước lọc và bước sắp xếp trong cùng một truy vấn.
 
 ---
 
-## 🗺️ API & Routes Reference
+## API & Routes Reference
 
 ### Client Routes (prefix `/`)
 
@@ -868,7 +844,7 @@ Trong số các index đã thêm, 4 index sau đang được một query thực 
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 ```env
 # Server
@@ -894,11 +870,11 @@ API_SECRET=your_api_secret
 API_KEY_TINYMCE=your_tinymce_api_key
 ```
 
-> ⚠️ File `.env` đã có trong `.gitignore`. Không commit lên repository.
+> File `.env` đã có trong `.gitignore`. Không commit lên repository.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Yêu cầu
 
@@ -973,32 +949,6 @@ Chưa có flow tạo admin qua giao diện, cần insert thủ công:
 ```
 
 ---
+## Author
 
-## 🧩 Một số cách xử lý đáng chú ý
-
-### Dựng cây bình luận bằng hash map trong 1 lần duyệt
-Thay vì dùng đệ quy gọi lại database nhiều lần (như subtask ở dự án quản lý công việc), bình luận được lấy hết ra một lần rồi dựng cây hoàn toàn trong bộ nhớ bằng một class riêng (`getChildAndParentComments`). Cách này chỉ cần một lần duyệt mảng, xử lý được cả trường hợp comment con xuất hiện trước comment cha trong mảng kết quả (nhờ hàng đợi `pending`), và không tốn thêm query nào tới MongoDB dù cây có sâu bao nhiêu cấp.
-
-### Toggle like/dislike bằng một update xử lý cả hai chiều
-Khi người dùng đổi từ dislike sang like, thay vì gọi 2 request riêng (gỡ dislike rồi thêm like), service tính sẵn cả hai thao tác `$addToSet`/`$pull` và `$inc` cho cả hai chiều, gộp vào một lệnh `updateOne` duy nhất. Giảm số lần ghi vào database và tránh trạng thái trung gian không nhất quán nếu request bị gián đoạn giữa chừng.
-
-### Audit trail dùng collection riêng thay vì mảng nhúng
-Ở 2 dự án trước, lịch sử chỉnh sửa (`updatedBy`) là một mảng nhúng thẳng trong document. Ở dự án này, mỗi entity (bài hát, ca sĩ, chủ đề, role, manager) trỏ tới một document `BlogUpdated` riêng qua `updatedBlogId`. Cách này tách lịch sử ra khỏi document chính — document chính gọn hơn khi query danh sách (không kéo theo cả lịch sử), và việc populate lịch sử chỉ xảy ra ở trang cần xem (`/song/blog`), không ảnh hưởng tới các trang danh sách thông thường.
-
-### Đổi mật khẩu khi đã đăng nhập vẫn qua OTP email
-Mật khẩu mới được hash trước và tạm lưu trong session, chỉ thực sự ghi vào database sau khi người dùng xác thực đúng OTP gửi qua email. Việc này đảm bảo dù có ai chiếm được phiên đăng nhập (session) của người dùng, họ cũng không thể đổi mật khẩu ngay lập tức nếu không truy cập được hộp email.
-
-### Hai session độc lập cho admin và client
-`express-session` được cấu hình 2 lần với tên cookie và `secret` khác nhau — session admin còn giới hạn `path: "/server"` nên trình duyệt chỉ gửi cookie đó khi gọi tới route admin. Nhờ vậy một người vừa đăng nhập client vừa đăng nhập admin trên cùng trình duyệt sẽ không bị đè phiên lẫn nhau.
-
-### RBAC kiểm tra bằng middleware factory ở route
-Khác với dự án quản lý công việc (kiểm tra permission trong từng hàm controller), ở đây `checkPermission(permission)` là một factory function trả về middleware, gắn thẳng vào route: `router.post("/create", checkPermission("song_create"), controller.createPost)`. Cách này giúp nhìn vào file route là biết ngay hành động nào cần quyền gì, không cần mở controller ra đọc.
-
-### Thêm Index dựa trên query thực tế, không thêm tràn lan
-Đây là điểm mới học được khi làm dự án này (chi tiết ở mục 10 phần Workflows). Thay vì đoán trường nào "có vẻ" cần index, cách làm ở đây là xem lại những câu query chạy thường xuyên nhất trong code (danh sách bình luận của 1 bài hát, danh sách bài hát theo chủ đề/ca sĩ), xác định trường nào dùng để lọc và trường nào dùng để sắp xếp, rồi mới thêm compound index theo đúng thứ tự lọc trước – sắp xếp sau. Một số index (theo `parent_id`, theo `likesCount`/`dislikesCount`) được thêm trước cho các tính năng dự tính làm sau này nhưng chưa có query nào dùng tới — được ghi chú rõ trong tài liệu để không nhầm lẫn giữa index "đang tối ưu thật" và index "chuẩn bị sẵn".
-
----
-
-## 👤 Author
-
-Dự án cá nhân, xây dựng trong quá trình học và thực hành full-stack TypeScript với các luồng tương tác phức tạp hơn (bình luận lồng nhau, thông báo, theo dõi) so với các dự án trước đó.
+Dự án cá nhân, xây dựng trong quá trình học và thực hành full-stack TypeScript với các luồng tương tác tương đối phức tạp: bình luận lồng nhau, thông báo, theo dõi ca sĩ.
