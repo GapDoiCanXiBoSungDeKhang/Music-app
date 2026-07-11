@@ -2,7 +2,7 @@
 
 Đây là dự án học tập cá nhân — một ứng dụng nghe nhạc trực tuyến, xây dựng bằng Node.js, Express, TypeScript và MongoDB. Dự án gồm hai phần: trang dành cho người nghe (client) và trang quản trị dành cho admin (gọi trong code là "manager").
 
-Dự án thực hành xây dựng một hệ thống có nhiều luồng tương tác: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo tĩnh khi có bài hát mới, xác thực bằng Passport.js với session, và một hệ phân quyền được tách thành các collection riêng biệt.
+Dự án thực hành xây dựng một hệ thống có nhiều luồng tương tác: bình luận lồng nhau (giống YouTube/Facebook), theo dõi ca sĩ và nhận thông báo khi có bài hát mới, xác thực bằng Passport.js với session, và một hệ phân quyền được tách thành các collection riêng thay vì nhúng trực tiếp vào role.
 
 ---
 
@@ -16,7 +16,7 @@ Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()
 
 ## Table of Contents
 
-- [Dự án này làm được](#dự-án-này-làm-được)
+- [Dự án này làm được gì](#dự-án-này-làm-được-gì)
 - [Tech Stack](#tech-stack)
 - [System Architecture](#system-architecture)
 - [Database Schema](#database-schema)
@@ -38,7 +38,7 @@ Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()
 
 ---
 
-## Dự án này làm được
+## Dự án này làm được gì
 
 Ứng dụng chia thành hai khu vực, dùng chung một Express app nhưng có session và tiền tố route riêng:
 
@@ -96,65 +96,65 @@ Các collection liên kết với nhau bằng `ObjectId` kết hợp `populate()
 ## System Architecture
 
 ```
-┌───────────────────────────────────────────────────────────────────────┐
-│                          BROWSER                                      │
-│   Cookie "client.sid"  (người nghe)                                   │
-│   Cookie "admin.sid"   (quản trị viên, path scope = /server)          │
-└───────────────────────────┬───────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                          BROWSER                                 │
+│   Cookie "client.sid"  (người nghe)                              │
+│   Cookie "admin.sid"   (quản trị viên, path scope = /server)     │
+└───────────────────────────┬──────────────────────────────────────┘
                             │ HTTP Request
                             @
-┌───────────────────────────────────────────────────────────────────────┐
-│                     EXPRESS SERVER (app.ts)                           │  
-│                                                                       │
-│  generalSettingMiddleware → kiểm tra maintenance mode toàn cục        │
-│                                                                       │
-│  ┌───────────────────────┐     ┌─────────────────────────────┐        │
-│  │   Client Routes       │     │   Admin Routes (/server)    │        │
-│  │   /home  /song        │     │   /dashboard  /song         │        │
-│  │   /singer  /topic     │     │   /singer  /topic           │        │
-│  │   /api (comment)      │     │   /user  /manager           │        │
-│  │   /profile  /playlist │     │   /role  /permission        │        │
-│  │   /notification       │     │   /profile  /setting        │        │
-│  │   /feed  /contact     │     │   /verification             │        │
-│  │   /auth  /verification│     │   /auth                     │        │
-│  └──────────┬────────────┘     └─────────────┬───────────────┘        │
-│             │                                │                        │
-│  ┌──────────@────────────────────────────────@───────────────┐        │
-│  │        Passport.js (session-based, 2 strategy)            │        │
-│  │  local-client → tìm trong UserModel                       │        │
-│  │  local-server → tìm trong ManagerModel                    │        │
-│  │  deserializeUser → populate đầy đủ quan hệ theo type      │        │
-│  └──────────┬────────────────────────────────┬───────────────┘        │
-│             │                                │                        │
-│  ┌──────────@──────────┐          ┌───────────@─────────────────────┐ │
-│  │ isAuthenticated     │          │ isAuthenticated (admin)         │ │
-│  │ (client) — kiểm tra │          │ + checkPermission(perm)         │ │
-│  │ req.user status/    │          │   → so req.user.roleId          │ │
-│  │ deleted             │          │     .permissions.listPermission │ │
-│  └──────────┬──────────┘          └───────────┬─────────────────────┘ │
-│             │                                │                        │
-│  ┌──────────@────────────────────────────────@─────────────────────┐  │
-│  │              Controller → Service Layer                         │  │
-│  │   Mỗi module có Controller (điều hướng HTTP) và Service         │  │
-│  │   (business logic + query DB) tách riêng                        │  │
-│  └──────────┬──────────────────────────────────────────────────────┘  │
-│             │                                                         │
-│  ┌──────────@──────────────────────────────────────────────────────┐  │
-│  │         Shared Helper / Logic                                   │  │
-│  │  getChildAndParentComments — dựng cây bình luận (hash map)      │  │
-│  │  filterArrayLog — gom lịch sử chỉnh sửa từ BlogUpdated          │  │
-│  │  pagination, cntDocument, generateRandom, sendMail, unidecode   │  │
-│  └──────────┬──────────────────────────────────────────────────────┘  │
-│             │                                                         │
-│  ┌──────────@──────────────────────────────────────────────────────┐  │
-│  │                 Model Layer (Mongoose)                          │  │
-│  └──────────┬──────────────────────────────────────────────────────┘  │
-└─────────────┼─────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────┐
+│                     EXPRESS SERVER (app.ts)                        │
+│                                                                    │
+│  generalSettingMiddleware → kiểm tra maintenance mode toàn cục     │
+│                                                                    │
+│  ┌───────────────────────┐      ┌──────────────────────────────┐   │
+│  │   Client Routes       │      │   Admin Routes (/server)     │   │
+│  │   /home  /song        │      │   /dashboard  /song          │   │
+│  │   /singer  /topic     │      │   /singer  /topic            │   │
+│  │   /api (comment)      │      │   /user  /manager            │   │
+│  │   /profile  /playlist │      │   /role  /permission         │   │
+│  │   /notification       │      │   /profile  /setting         │   │
+│  │   /feed  /contact     │      │   /verification              │   │
+│  │   /auth  /verification│      │   /auth                      │   │
+│  └──────────┬────────────┘      └────────────┬─────────────────┘   │
+│             │                                │                     │
+│  ┌──────────@────────────────────────────────@──────────────────┐  │
+│  │        Passport.js (session-based, 2 strategy)               │  │
+│  │  local-client → tìm trong UserModel                          │  │
+│  │  local-server → tìm trong ManagerModel                       │  │
+│  │  deserializeUser → populate đầy đủ quan hệ theo type         │  │
+│  └──────────┬────────────────────────────────┬──────────────────┘  │
+│             │                                │                     │
+│  ┌──────────@─────────┐          ┌───────────@───────────────────┐ │
+│  │ isAuthenticated    │          │ isAuthenticated (admin)       │ │
+│  │ (client) — kiểm tra│          │ + checkPermission(perm)       │ │
+│  │ req.user status/   │          │   → so req.user.roleId        │ │
+│  │ deleted            │          │    .permissions.listPermission│ │
+│  └──────────┬─────────┘          └───────────┬───────────────────┘ │
+│             │                                │                     │
+│  ┌──────────@────────────────────────────────@──────────────────┐  │
+│  │              Controller → Service Layer                      │  │
+│  │   Mỗi module có Controller (điều hướng HTTP) và Service      │  │
+│  │   (business logic + query DB) tách riêng                     │  │
+│  └──────────┬───────────────────────────────────────────────────┘  │
+│             │                                                      │
+│  ┌──────────@───────────────────────────────────────────────────┐  │
+│  │         Shared Helper / Logic                                │  │
+│  │  getChildAndParentComments — dựng cây bình luận (hash map)   │  │
+│  │  filterArrayLog — gom lịch sử chỉnh sửa từ BlogUpdated       │  │
+│  │  pagination, cntDocument, generateRandom, sendMail, unidecode│  │
+│  └──────────┬───────────────────────────────────────────────────┘  │
+│             │                                                      │
+│  ┌──────────@───────────────────────────────────────────────────┐  │
+│  │                 Model Layer (Mongoose)                       │  │
+│  └──────────┬───────────────────────────────────────────────────┘  │
+└─────────────┼──────────────────────────────────────────────────────┘
               │
-  ┌───────────@─────────────┐         ┌─────────────────────────┐
-  │      MongoDB Atlas      │         │      Cloudinary         │
-  │ users, managers, roles, │         │ (ảnh bìa + file audio)  │
-  │ permissions, songs,     │         └─────────────────────────┘
+  ┌───────────@─────────────┐         ┌───────────────────────┐
+  │      MongoDB Atlas      │         │      Cloudinary       │
+  │ users, managers, roles, │         │ (ảnh bìa + file audio)│
+  │ permissions, songs,     │         └───────────────────────┘
   │ singers, topics,        │
   │ comments, songsLike,    │
   │ songsFavourite,         │
@@ -380,41 +380,47 @@ Quan hệ giữa các collection dùng `ObjectId` kết hợp `populate()` để
 ```
 Music-app/
 ├── src/
-│   ├── app.ts                          # Entry point — cấu hình Express, Passport, session, routes
+│   ├── app.ts                              # Entry point — cấu hình Express, Passport, session, routes
 │   │
 │   ├── common/
 │   │   ├── config/
-│   │   │   ├── database.config.ts      # Kết nối MongoDB
-│   │   │   ├── prefixName.config.ts    # PATH_ADMIN = "/server"
-│   │   │   ├── passport.config.ts      # 2 chiến lược local: local-client, local-server
-│   │   │   ├── connectPassport.config.ts # Gắn session + passport vào app
-│   │   │   ├── session.client.ts       # Session "client.sid", scope toàn site
-│   │   │   └── session.server.ts       # Session "admin.sid", scope "/server"
+│   │   │   ├── database.config.ts          # Kết nối MongoDB
+│   │   │   ├── prefixName.config.ts        # PATH_ADMIN = "/server"
+│   │   │   ├── passport.config.ts          # 2 chiến lược local: local-client, local-server
+│   │   │   ├── connectPassport.config.ts   # Gắn session + passport vào app
+│   │   │   ├── session.client.ts           # Session "client.sid", scope toàn site
+│   │   │   └── session.server.ts           # Session "admin.sid", scope "/server"
 │   │   │
-│   │   ├── model/                      # 15 Mongoose model (liệt kê ở Database Schema)
+│   │   ├── model/                          # 16 Mongoose model
+│   │   │   ├── user.model.ts, manager.model.ts, role.model.ts, permission.model.ts
+│   │   │   ├── song.model.ts, singer.model.ts, topic.model.ts, comment.model.ts
+│   │   │   ├── songLike.model.ts, songFavourite.model.ts, songView.model.ts
+│   │   │   ├── subscribers.model.ts, message.model.ts, blog_updated.model.ts
+│   │   │   ├── forgot.model.ts, general-setting.model.ts
 │   │   │
 │   │   ├── middleware/
-│   │   │   ├── auth.middleware.ts          # isAuthenticated (client) — inject res.locals.user
-│   │   │   ├── authServer.middleware.ts    # isAuthenticated (admin) — inject res.locals.manager
-│   │   │   ├── checkPermisson.middleware.ts # checkPermission(perm) factory — kiểm tra RBAC
-│   │   │   ├── generalSettingMiddleware.ts # Kiểm tra maintenance mode toàn cục
-│   │   │   ├── rateLimitAuth.middleware.ts # Giới hạn 5 lần đăng nhập / 5 phút
-│   │   │   └── upload.middleware.ts        # Upload buffer lên Cloudinary qua stream
+│   │   │   ├── auth.middleware.ts              # isAuthenticated (client) — inject res.locals.user
+│   │   │   ├── authServer.middleware.ts        # isAuthenticated (admin) — inject res.locals.manager
+│   │   │   ├── checkPermisson.middleware.ts    # checkPermission(perm) factory — kiểm tra RBAC
+│   │   │   ├── generalSettingMiddleware.ts     # Kiểm tra maintenance mode toàn cục
+│   │   │   ├── rateLimitAuth.middleware.ts     # Giới hạn 5 lần đăng nhập / 5 phút
+│   │   │   └── upload.middleware.ts            # Upload buffer lên Cloudinary qua stream (uploadFields)
 │   │   │
-│   │   ├── validate/                   # Validator cho từng loại dữ liệu
-│   │   │   ├── auth.validate.ts, dataSong.validate.ts, dataSinger.validate.ts
+│   │   ├── validate/                       # 14 validator
+│   │   │   ├── auth.validate.ts, editProfile.validate.ts, changePassword.validate.ts
+│   │   │   ├── checkAccessPathTime.validate.ts, dataSong.validate.ts, dataSinger.validate.ts
 │   │   │   ├── dataTopic.validate.ts, dataRole.validate.ts, dataManager.validate.ts
-│   │   │   ├── changePassword.validate.ts, checkAccessPathTime.validate.ts
-│   │   │   ├── changeMulti.validate.ts, status.validate.ts, id.validate.ts, slug.validate.ts
+│   │   │   ├── changeMulti.validate.ts, status.validate.ts, id.validate.ts
+│   │   │   ├── slug.validate.ts, songView.validate.ts
 │   │   │
 │   │   └── data/
-│   │       ├── modules-permissions.data.ts  # Danh sách module + action cho form phân quyền
+│   │       ├── modules-permissions.data.ts     # Danh sách module + action cho form phân quyền
 │   │       ├── modules-roles.data.ts
-│   │       └── objectSentMail.data.ts       # Template nội dung email
+│   │       └── objectSentMail.data.ts          # Template nội dung email
 │   │
 │   ├── shared/
 │   │   ├── helper/
-│   │   │   ├── cntDocument.helper.ts   # Đếm document (song, comment chưa đọc, ...)
+│   │   │   ├── cntDocument.helper.ts       # Đếm document (song, comment chưa đọc, ...)
 │   │   │   └── dataRole.helper.ts
 │   │   ├── logic/
 │   │   │   ├── getChildAndParentComments.ts  # Dựng cây bình luận bằng hash map
@@ -425,26 +431,89 @@ Music-app/
 │   │
 │   └── module/
 │       ├── admin/
-│       │   ├── controller/    # auth, dashboard, manager, permission, profile, role,
-│       │   │                  # setting, singer, song, topic, user, verification
-│       │   ├── service/       # tương ứng từng controller — business logic + query DB
-│       │   └── route/         # tương ứng từng controller — gắn checkPermission theo action
+│       │   ├── controller/
+│       │   │   ├── auth.controller.ts, dashboard.controller.ts, manager.controller.ts
+│       │   │   ├── permission.controller.ts, profile.controller.ts, role.controller.ts
+│       │   │   ├── setting.controller.ts, singer.controller.ts, song.controller.ts
+│       │   │   ├── topic.controller.ts, user.controller.ts, verification.controller.ts
+│       │   ├── service/           # 11 service tương ứng (trừ auth dùng chung logic trong controller)
+│       │   │   ├── dashboard.service.ts, manager.service.ts, permission.service.ts
+│       │   │   ├── profile.service.ts, role.service.ts, setting.service.ts
+│       │   │   ├── singer.service.ts, song.service.ts, topic.service.ts
+│       │   │   ├── user.service.ts, verification.service.ts
+│       │   └── route/             # 13 file, gắn checkPermission(...) theo từng action
+│       │       ├── index.route.ts, auth.route.ts, dashboard.route.ts, manager.route.ts
+│       │       ├── permission.route.ts, profile.route.ts, role.route.ts, setting.route.ts
+│       │       ├── singer.route.ts, song.route.ts, topic.route.ts, user.route.ts
+│       │       ├── verification.route.ts
 │       │
 │       └── client/
-│           ├── controller/    # apiComment, auth, contact, feed, home, notification,
-│           │                  # playlist, profile, singer, song, topic, verification
-│           ├── service/       # tương ứng từng controller
-│           └── route/
+│           ├── controller/
+│           │   ├── apiComment.controller.ts, auth.controller.ts, contact.controller.ts
+│           │   ├── feed.controller.ts, home.controller.ts, notification.controller.ts
+│           │   ├── playlist.controller.ts, profile.controller.ts, singer.controller.ts
+│           │   ├── song.controller.ts, topic.controller.ts, verification.controller.ts
+│           ├── service/           # 11 service tương ứng (notification không có service riêng)
+│           │   ├── apiComment.service.ts, auth.service.ts, feed.service.ts
+│           │   ├── home.service.ts, notification.service.ts, playlist.service.ts
+│           │   ├── profile.service.ts, singer.service.ts, song.service.ts
+│           │   ├── topic.service.ts, verification.service.ts
+│           └── route/             # 13 file
+│               ├── index.route.ts, api.route.ts, auth.route.ts, contact.route.ts
+│               ├── feed.route.ts, home.route.ts, notification.route.ts, playlist.route.ts
+│               ├── profile.route.ts, singer.route.ts, song.route.ts, topic.route.ts
+│               ├── verification.route.ts
 │
-├── views/                     # Pug templates — admin/ và client/ tách riêng
-│   ├── admin/{layouts,mixins,pages,partials}/
-│   ├── client/{layouts,mixins,pages,partials}/
+├── views/
+│   ├── admin/
+│   │   ├── layouts/  default.pug, auth.pug
+│   │   ├── mixins/   alert.pug, box-head.pug, pagination.pug
+│   │   ├── partials/ header.pug, footer.pug, sidebar.pug
+│   │   └── pages/
+│   │       ├── auth/login.pug
+│   │       ├── dashboard/dashboard.pug
+│   │       ├── songs/       list.pug, create.pug, edit.pug, detail.pug
+│   │       ├── singer/      list.pug, create.pug, edit.pug, detail.pug
+│   │       ├── topics/      list.pug, create.pug, edit.pug, detail.pug
+│   │       ├── manager/     list.pug, create.pug, edit.pug, detail.pug
+│   │       ├── role/        list.pug, create.pug, edit.pug, detail.pug
+│   │       ├── permission/permission.pug
+│   │       ├── user/        list.pug, detail.pug
+│   │       ├── profile/     profile.pug, edit.pug, changePassword.pug
+│   │       ├── verification/otp.pug
+│   │       ├── setting/general.pug
+│   │       └── blog/index.pug            # Trang lịch sử chỉnh sửa (BlogUpdated)
+│   ├── client/
+│   │   ├── layouts/  default.pug, auth.pug
+│   │   ├── mixins/   alert.pug, box-head.pug
+│   │   ├── partials/ header.pug, footer.pug, sidebar.pug
+│   │   └── pages/
+│   │       ├── home/index.pug
+│   │       ├── songs/    list.pug, detail.pug, search.pug
+│   │       ├── singer/   list.pug, detail.pug        # playlist/feed tái dùng chung view này
+│   │       ├── topics/topics.pug
+│   │       ├── favourite/favourite.pug
+│   │       ├── history/list.pug
+│   │       ├── auth/     login.pug, register.pug, forgot.pug, otp.pug, change-password.pug
+│   │       ├── profile/  profile.pug, edit.pug, changePassword.pug
+│   │       ├── verification/otp.pug
+│   │       └── contact/index.pug
 │   ├── error/404.pug
-│   └── maintenance/index.pug  # Trang hiển thị khi bật chế độ bảo trì
+│   └── maintenance/index.pug               # Trang hiển thị khi bật chế độ bảo trì
 │
 ├── public/
-│   ├── admin/{css,js}/        # dashboard-charts.js, permission.js, change-multi.js, ...
-│   └── client/{css,js}/       # aplayer.js (trình phát nhạc), comments.js, like.js, ...
+│   ├── admin/
+│   │   ├── css/  main.css, alert.css, blog.css, create_song.css, permission.css,
+│   │   │         profile.css, song.css
+│   │   └── js/   sidebar.js, checkbox.js, query.js, create.js, change-status.js,
+│   │             change-multi.js, delete.js, permission.js, dashboard-charts.js, tinymce.js
+│   └── client/
+│       ├── css/  main.css, alert.css, auth.css, header.css, home.css, user.css,
+│       │         profile.css, songs.css, detailSong.css, singer.css, singerDetail.css,
+│       │         topics.css, comments.css, favourite.css, subscribe.css, suggest.css
+│       ├── js/   aplayer.js (trình phát nhạc), comments.js, like.js, favourite.js,
+│       │         subscribe.js, suggest.js, sidebar.js
+│       └── image/5701640.jpg
 │
 ├── package.json
 ├── tsconfig.json
